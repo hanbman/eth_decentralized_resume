@@ -55,7 +55,7 @@ contract Resume {
   struct Institution {
         string name;
         string date_joined;
-        institutionType type;
+        institutionType itype;
         address payable institutionAddr;
     }
 
@@ -115,7 +115,7 @@ contract Resume {
         string date_received;
         string start_date;
         string end_date;
-        entryType type;
+        entryType etype;
         string review;
     }
 
