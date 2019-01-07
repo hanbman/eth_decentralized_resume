@@ -14,7 +14,8 @@ contract Resume {
   uint InstitutionCount;
   uint EntryCount;
 
-  /* keep a list of Admins that can add universities, users, entries
+  /* keep a list of Admins that can add universities, users, entries */
+  
   mapping(address => bool) admins;
 
   // ///////////////////////     USERS    ////////////////////////// //
@@ -30,8 +31,8 @@ contract Resume {
   
   struct User {
         string name;
-        string date_joined;
-        address payable userAddr;
+        uint date_joined;
+        address userAddr;
     }
 
   // ////////////////////////////////////////////////////////////// //
@@ -54,9 +55,9 @@ contract Resume {
   
   struct Institution {
         string name;
-        string date_joined;
+        uint date_joined;
         institutionType itype;
-        address payable institutionAddr;
+        address institutionAddr;
     }
 
   // ////////////////////////////////////////////////////////////// //
@@ -68,12 +69,12 @@ contract Resume {
   Each user is mapped to one resume, and joined using UserID
    */
     
-  mapping (uint => Resume) public resumes;
+  mapping (uint => uint[]) public resumes;
 
   /* Each resume is an array of unique entryids that string together a single resume
    */
 
-  uint[] Resume;
+  uint[] the_resume;
 
   // ////////////////////////////////////////////////////////////// //
 
@@ -112,9 +113,9 @@ contract Resume {
         string entry_title;
         string degree_descr;
         uint institutionID;
-        string date_received;
-        string start_date;
-        string end_date;
+        uint date_received;
+        uint start_date;
+        uint end_date;
         entryType etype;
         string review;
     }
@@ -156,7 +157,7 @@ contract Resume {
   
   modifier verifyAdmin () 
     { 
-      require (Admin(msg.sender)==true, "This action is prohibited for non Admins.");
+      require (admins[msg.sender]==true, "This action is prohibited for non Admins.");
       _;
     }
   
@@ -183,7 +184,7 @@ contract Resume {
     /* Set the owner as the person who instantiated the contract
     Set the counts of Users, Institions, and Entries to 0. */
     owner=msg.sender;
-    admin[owner]=true;
+    admins[owner]=true;
     UserCount=1;
     InstitutionCount=1;
     EntryCount=1;
@@ -192,7 +193,7 @@ contract Resume {
   //function addAdmin(address admin)
   
   /* This function let's users sign up for this service to record their resumes */
-  function signUpUser(string _name)
+  function signUpUser(string memory _name)
   public
   returns(bool)
   {
@@ -203,16 +204,18 @@ contract Resume {
   }
 
   /* This function let's admins add institutions that are legitimate */
-  function addInstitution(string _name, address _institutionAddr, institutionType _type) 
+  function addInstitution(string memory _name, address _institutionAddr, institutionType _itype) 
   public
   verifyAdmin()
   returns(bool)
   {
-    institutions[InstitutionCount] = Institution({name: _name, date_joined: now, institutionType: _type, institutionAddr=_institutionAddr});
-    emit AddedInstitution(InstitutionCount)
+    institutions[InstitutionCount] = Institution({name: _name, date_joined: now, itype: _itype, institutionAddr: _institutionAddr});
+    emit AddedInstitution(InstitutionCount);
     InstitutionCount = InstitutionCount + 1;
     return true;
   }
+
+/*
 
   /* Add a keyword so the function can be paid. This function should transfer money
     to the seller, set the buyer as the person who called this transaction, and set the state
@@ -269,6 +272,9 @@ contract Resume {
     buyer = items[_sku].buyer;
     return (name, sku, price, state, seller, buyer);
   }
+
+*/
+
 
   // ////////////////////////////////////////////////////////////// //
   // /////////////////////// END OF FUNCTIONS ////////////////////////// //
