@@ -43,9 +43,9 @@ contract Resume {
     
   mapping (uint => Institution) public institutions;
 
-  /* Creating an enum called Type for types of institutions */
+  /* Creating an enum called institutionType for types of institutions */
   
-  enum Type {University, School, Certificator}
+  enum institutionType {University, School, Certificator}
 
   /* Creating a struct named Institution. 
   Can expand more details about the Institution in the future- 
@@ -55,7 +55,7 @@ contract Resume {
   struct Institution {
         string name;
         string date_joined;
-        Type type;
+        institutionType type;
         address payable institutionAddr;
     }
 
@@ -92,7 +92,7 @@ contract Resume {
   2. receiving a certification from a Certificator
   */
   
-  enum Type {Degree, Certificate}
+  enum entryType {Degree, Certificate}
   
   /* struct of the entry containing info about the individual entry
   - approved- boolean True/False for if the review is approved by receiver to prevent
@@ -115,7 +115,7 @@ contract Resume {
         string date_received;
         string start_date;
         string end_date;
-        Type type;
+        entryType type;
         string review;
     }
 
@@ -203,12 +203,12 @@ contract Resume {
   }
 
   /* This function let's admins add institutions that are legitimate */
-  function addInstitution(string _name, address _institutionAddr, Type _type) 
+  function addInstitution(string _name, address _institutionAddr, institutionType _type) 
   public
   verifyAdmin()
   returns(bool)
   {
-    institutions[InstitutionCount] = Institution({name: _name, date_joined: now, type: _type, institutionAddr=_institutionAddr});
+    institutions[InstitutionCount] = Institution({name: _name, date_joined: now, institutionType: _type, institutionAddr=_institutionAddr});
     emit AddedInstitution(InstitutionCount)
     InstitutionCount = InstitutionCount + 1;
     return true;
