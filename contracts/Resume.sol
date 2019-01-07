@@ -1,46 +1,124 @@
-/*
-    This exercise has been updated to use Solidity version 0.5
-    Breaking changes from 0.4 to 0.5 can be found here: 
-    https://solidity.readthedocs.io/en/v0.5.0/050-breaking-changes.html
-*/
-
 pragma solidity ^0.5.0;
 
-contract SupplyChain {
+contract Resume {
+
+  // ////////////////////////////////////////////////////////////// //
+  // /////////////////////// VARIABLES ////////////////////////// //
+  // ////////////////////////////////////////////////////////////// //
 
   /* set owner */
   address owner;
 
-  /* Add a variable called skuCount to track the most recent sku # */
-  uint skuCount;
+  // ///////////////////////     USERS    ////////////////////////// //
 
-  /* Add a line that creates a public mapping that maps the SKU (a number) to an Item.
-     Call this mappings items
-  */
-    mapping (uint => Item) public items;
+  /* Creating a public mapping that maps the UserID (a number) to a User. */
+    
+  mapping (uint => User) public users;
 
-  /* Add a line that creates an enum called State. This should have 4 states
-    ForSale
-    Sold
-    Shipped
-    Received
-    (declaring them in this order is important for testing)
+  /* Creating a struct named User. 
+  Can expand more details about the User in the future- 
+  address, age, etc
   */
-  enum State {ForSale, Sold, Shipped, Received}
-
-  /* Create a struct named Item.
-    Here, add a name, sku, price, state, seller, and buyer
-    We've left you to figure out what the appropriate types are,
-    if you need help you can ask around :)
-  */
-  struct Item {
+  
+  struct User {
         string name;
-        uint sku;
-        uint price;
-        State state;
-        address payable seller;
-        address payable buyer;
+        string date_joined;
+        address payable userAddr;
     }
+
+  // ////////////////////////////////////////////////////////////// //
+
+
+  // /////////////////////// INSTITUTIONS ////////////////////////// //
+
+  /* Creating a public mapping that maps the InstitutionID (a number) to an Instituion. */
+    
+  mapping (uint => Institution) public institutions;
+
+  /* Creating an enum called Type for types of institutions */
+  
+  enum Type {University, School, Certificator}
+
+  /* Creating a struct named Institution. 
+  Can expand more details about the Institution in the future- 
+  address, year of inception, etc
+  */
+  
+  struct Institution {
+        string name;
+        string date_joined;
+        Type type;
+        address payable institutionAddr;
+    }
+
+  // ////////////////////////////////////////////////////////////// //
+  
+
+  // /////////////////////// RESUMES ////////////////////////// //
+
+  /* Creating a public mapping that maps the UserID (a number) to a resume.
+  Each user is mapped to one resume, and joined using UserID
+   */
+    
+  mapping (uint => Resume) public resumes;
+
+  /* Each resume is an array of unique entryids that string together a single resume
+   */
+
+  uint[] Resume;
+
+  // ////////////////////////////////////////////////////////////// //
+
+  
+  // /////////////////////// ENTRIES ////////////////////////// //
+  
+  /* Creating a mapping that maps the EntryID (a number) to an entry.
+  Each resume is an array of entries
+   */
+  
+  mapping (uint => Entry) entries;
+  
+  /* Creating a struct named Entry. 
+  These are individual entries in the resume- there are two types of entries accounting for
+  1. receiving a degree from a University or School
+  2. receiving a certification from a Certificator
+  */
+  
+  enum Type {Degree, Certificate}
+  
+  /* struct of the entry containing info about the individual entry
+  - entry_title- title of the degree or certificate earned eg. B.S. bachelor of science
+  - degree_descr- description of the entry such as the major for a degree, or specialization of a certificate
+  - institutionID- the id of the institution issuing the entry
+  - date_received- date that the entry was issued
+  - start_date- when the degree or certificate is valid
+  - end_date- when the degree or certificate is not valid
+  - review- gives a review of the user- can be a recommendation, etc
+
+  */
+  struct Entry {
+        string entry_title;
+        string degree_descr;
+        uint institutionID;
+        string date_received;
+        string start_date;
+        string end_date;
+        Type type;
+        string review;
+    }
+
+  // ////////////////////////////////////////////////////////////// //
+  
+
+  // ////////////////////////////////////////////////////////////// //
+  // /////////////////////// END OF VARIABLES ////////////////////////// //
+  // ////////////////////////////////////////////////////////////// //
+  
+  
+  
+  // ////////////////////////////////////////////////////////////// //
+  // /////////////////////// EVENTS ////////////////////////// //
+  // ////////////////////////////////////////////////////////////// //
 
   /* Create 4 events with the same name as each possible State (see above)
     Each event should accept one argument, the sku*/
@@ -49,6 +127,10 @@ contract SupplyChain {
     event Sold(uint sku);
     event Shipped(uint sku);
     event Received(uint sku);
+
+  // ////////////////////////////////////////////////////////////// //
+  // /////////////////////// END OF EVENTS ////////////////////////// //
+  // ////////////////////////////////////////////////////////////// //
 
     /* Create a modifer that checks if the msg.sender is the owner of the contract */
     // Do not forget the "_;"! It will
