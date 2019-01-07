@@ -9,6 +9,14 @@ contract Resume {
   /* set owner */
   address owner;
 
+  /* keep track of the users, institutions, and entries */
+  uint UserCount;
+  uint InstitutionCount;
+  uint EntryCount;
+
+  /* keep a list of Admins that can add universities, users, entries
+  mapping(address => bool) admins;
+
   // ///////////////////////     USERS    ////////////////////////// //
 
   /* Creating a public mapping that maps the UserID (a number) to a User. */
@@ -87,6 +95,9 @@ contract Resume {
   enum Type {Degree, Certificate}
   
   /* struct of the entry containing info about the individual entry
+  - approved- boolean True/False for if the review is approved by receiver to prevent
+  malicious reviews to be added to someone's transcript. Default to False until user goes to 
+  approve it and it will be added to their resume. 
   - entry_title- title of the degree or certificate earned eg. B.S. bachelor of science
   - degree_descr- description of the entry such as the major for a degree, or specialization of a certificate
   - institutionID- the id of the institution issuing the entry
@@ -97,6 +108,7 @@ contract Resume {
 
   */
   struct Entry {
+        bool approved;
         string entry_title;
         string degree_descr;
         uint institutionID;
@@ -120,92 +132,85 @@ contract Resume {
   // /////////////////////// EVENTS ////////////////////////// //
   // ////////////////////////////////////////////////////////////// //
 
-  /* Create 4 events with the same name as each possible State (see above)
-    Each event should accept one argument, the sku*/
+  /* Create events*/
 
-    event ForSale(uint sku);
-    event Sold(uint sku);
-    event Shipped(uint sku);
-    event Received(uint sku);
+    event AddedAdmin(address adminAddr);
+    event AddedInstitution(uint UniversityID);
+    event AddedUser(uint UserID);
+    event EntryCreated(uint EntryID);
+    event AddedtoResume(uint EntryID, uint UserID);
 
   // ////////////////////////////////////////////////////////////// //
   // /////////////////////// END OF EVENTS ////////////////////////// //
   // ////////////////////////////////////////////////////////////// //
 
-    /* Create a modifer that checks if the msg.sender is the owner of the contract */
+
+  // ////////////////////////////////////////////////////////////// //
+  // /////////////////////// MODIFIERS ////////////////////////// //
+  // ////////////////////////////////////////////////////////////// //
+
+    /* A modifer that checks if the msg.sender is the the right address */
     // Do not forget the "_;"! It will
     // be replaced by the actual function
     // body when the modifier is used.
   
+  modifier verifyAdmin () 
+    { 
+      require (Admin(msg.sender)==true, "This action is prohibited for non Admins.");
+      _;
+    }
+  
   modifier verifyCaller (address _address) 
     { 
-      require (msg.sender == _address, "message sender is not owner");
+      require (msg.sender == _address, "Message sender is not correct.");
       _;
     }
 
-  modifier paidEnough(uint _price)
-  { 
-      require(msg.value >= _price, "not paid enough"); 
-      _;
-  }
-  
-  modifier checkValue(uint _sku) 
-  {
-    //refund them after pay for item (why it is before, _ checks for logic before func)
-    _;
-    uint _price = items[_sku].price;
-    uint amountToRefund = msg.value - _price;
-    if (amountToRefund>0)
-        items[_sku].buyer.transfer(amountToRefund);
-  }
-
-  /* For each of the following modifiers, use what you learned about modifiers
-   to give them functionality. For example, the forSale modifier should require
-   that the item with the given sku has the state ForSale. */
-  
-  modifier forSale (uint _sku)
-  {
-      State _state = items[_sku].state;
-      require(_state==State.ForSale, "not for sale"); 
-      _;
-  }
-  
-  modifier sold (uint _sku)
-  {
-      State _state = items[_sku].state;
-      require(_state==State.Sold, "not sold"); 
-      _;
-  }
-  
-  modifier shipped (uint _sku)
-  {
-      State _state = items[_sku].state;
-      require(_state==State.Shipped, "not shipped"); 
-      _;
-  }
-  
-  modifier received (uint _sku)
-  {
-      State _state = items[_sku].state;
-      require(_state==State.Received, "not received"); 
-      _;
-  }
+  // ////////////////////////////////////////////////////////////// //
+  // /////////////////////// END OF MODIFIERS ////////////////////////// //
+  // ////////////////////////////////////////////////////////////// //
 
 
+  // ////////////////////////////////////////////////////////////// //
+  // /////////////////////// FUNCTIONS ////////////////////////// //
+  // ////////////////////////////////////////////////////////////// //
+
+  /* This is the constructor
+  We are setting the owner to the one who starts this contract
+  Sets the owner as the first admin
+  UserCount, InstitutionCount, and EntryCount set to 1 since we start IDs at 1 */
   constructor() payable public {
-    /* Here, set the owner as the person who instantiated the contract
-       and set your skuCount to 0. */
+    /* Set the owner as the person who instantiated the contract
+    Set the counts of Users, Institions, and Entries to 0. */
     owner=msg.sender;
-    skuCount=0;
+    admin[owner]=true;
+    UserCount=1;
+    InstitutionCount=1;
+    EntryCount=1;
   }
 
-  function addItem(string memory _name, uint _price) 
-  public 
+  //function addAdmin(address admin)
+  
+  /* This function let's users sign up for this service to record their resumes */
+  function signUpUser(string _name)
+  public
   returns(bool)
   {
-    emit ForSale(skuCount);
-    items[skuCount] = Item({name: _name, sku: skuCount, price: _price, state: State.ForSale, seller: msg.sender, buyer: address(0)});
-    skuCount = skuCount + 1;
+    users[UserCount] = User({name: _name, date_joined: now, userAddr: msg.sender});
+    emit AddedUser(UserCount);
+    UserCount = UserCount + 1;
+    return true;
+  }
+
+  /* This function let's admins add institutions that are legitimate */
+  function addInstitution(string _name, address _institutionAddr, Type _type) 
+  public
+  verifyAdmin()
+  returns(bool)
+  {
+    institutions[InstitutionCount] = Institution({name: _name, date_joined: now, type: _type, institutionAddr=_institutionAddr});
+    emit AddedInstitution(InstitutionCount)
+    InstitutionCount = InstitutionCount + 1;
     return true;
   }
 
@@ -264,5 +269,9 @@ contract Resume {
     buyer = items[_sku].buyer;
     return (name, sku, price, state, seller, buyer);
   }
+
+  // ////////////////////////////////////////////////////////////// //
+  // /////////////////////// END OF FUNCTIONS ////////////////////////// //
+  // ////////////////////////////////////////////////////////////// //
 
 }
