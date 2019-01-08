@@ -26,7 +26,7 @@ contract Resume {
   
   /* Creating a public mapping that maps the user address to the user ID. */
     
-  mapping (address => uint) public userIDMaps;
+  mapping (address => uint) userIDMaps;
   
   /* Creating a public mapping that maps the UserID (a number) to a User. */
     
@@ -54,7 +54,7 @@ contract Resume {
   
   /* Creating a public mapping that maps the institution address to the institution ID. */
     
-  mapping (address => uint) public institutionIDMaps;
+  mapping (address => uint) institutionIDMaps;
   
   /* Creating a public mapping that maps the InstitutionID (a number) to an Instituion. */
     
@@ -94,8 +94,8 @@ contract Resume {
   together resumes filled with entries
    */
 
-  uint[] the_resume;
-  uint[] resume_queue;
+  uint[] public the_resume;
+  uint[] public resume_queue;
 
   // ////////////////////////////////////////////////////////////// //
 
@@ -178,7 +178,7 @@ contract Resume {
     // be replaced by the actual function
     // body when the modifier is used.
   
-  /* a set of modifiers to check if an address is a valid admin, user, or institution
+  /* a set of modifiers to check if an address is a valid admin, user, or institution*/
   modifier verifyAdmin () 
     { 
       require (admins[msg.sender]==true, "This action is prohibited for non Admins.");
@@ -242,7 +242,8 @@ contract Resume {
   returns(bool)
   {
     admins[admin]=true;
-    emit AddedAdmin(admin)
+    emit AddedAdmin(admin);
+    return true;
   }
   
   /* This function let's users sign up for this service to record their resumes */
@@ -252,6 +253,7 @@ contract Resume {
   {
     users[UserCount] = User({name: _name, date_joined: now, userAddr: msg.sender});
     userIDMaps[msg.sender]=UserCount;
+    userList[msg.sender]=true;
     emit AddedUser(UserCount);
     UserCount = UserCount + 1;
     return true;
@@ -264,68 +266,64 @@ contract Resume {
   verifyAdmin()
   returns(bool)
   {
-    institutionsIDMaps[_institutionAddr]=InstitutionCount;
+    institutionIDMaps[_institutionAddr]=InstitutionCount;
     institutions[InstitutionCount] = Institution({name: _name, date_joined: now, itype: _itype, institutionAddr: _institutionAddr});
+    institutionList[_institutionAddr]=true;
     emit AddedInstitution(InstitutionCount);
     InstitutionCount = InstitutionCount + 1;
     return true;
   }
 
   /* This function let's institutions add entries that can go on the resumes of users*/
-  function addEntry(address _recipient, string _entry_title, string _degree_descr, 
-  uint _start_date, uint _end_date, etype _etype, string _review) 
+  function addEntry(address _recipient, string memory _entry_title, string memory _degree_descr, 
+  uint _start_date, uint _end_date, entryType _etype, string memory _review) 
   public
   verifyInstitution()
   verifyUserEntry(_recipient)
   returns(bool)
   {
-    /Create the entry
-    _approved=false;
-    _institutionID=institutionsIDMaps[msg.sender];
-    _date_received=now
+    //Create the entry
+    bool _approved=false;
+    uint _institutionID=institutionIDMaps[msg.sender];
+    uint _date_received=now;
     entries[EntryCount] = Entry({recipient: _recipient, approved: _approved,
     entry_title: _entry_title, degree_descr: _degree_descr, institutionID: _institutionID,
     date_received: _date_received, start_date: _start_date, end_date: _end_date, 
-    etype: _etype, review=_review});
+    etype: _etype, review: _review});
     emit EntryCreated(EntryCount);
 
-    /Add entry to the user's resume queue
-    _UserID=userIDMaps[_recipient];
+    //Add entry to the user's resume queue
+    uint _UserID=userIDMaps[_recipient];
     resume_queues[_UserID].push(EntryCount);
     emit AddedtoQueue(EntryCount, _UserID);
 
-    /Advance EntryCount and end function by returning true
+    //Advance EntryCount and end function by returning true
     EntryCount = EntryCount + 1;
     return true;
   }
 
-  /* This function let's users approve entries that are given to them 
-  We want to allow institutions to have the right to make the entries-
-  they are less incentivized to be malicious actors since they are approved
-  by admins to become approved institutions. 
-  Users are incentivized to approve the entries by institutions because they want 
-  to build their resume. If they reject it, there must be an identified problem. If they
-  disagree on the entry, they have to take it up with the institution but there is still
-  the mechanism for user to vet entries to prevent entries where mistakes are made.
+  /* This function let's user view the first item in their queue
+  No ability to return arrays yet in solidity???
   */
-  function approveEntry(address _recipient, string _entry_title, string _degree_descr, 
-  uint _start_date, uint _end_date, etype _etype, string _review) 
-  public
-  verifyInstitution()
-  returns(bool)
-  {
-    _approved=false;
-    _institutionID=institutionsIDMaps[msg.sender];
-    _date_received=now
-    entries[EntryCount] = Entry({recipient: _recipient, approved: _approved,
-    entry_title: _entry_title, degree_descr: _degree_descr, institutionID: _institutionID,
-    date_received: _date_received, start_date: _start_date, end_date: _end_date, 
-    etype: _etype, review=_review});
-    emit AddedEntry(EntryCount);
-    EntryCount = EntryCount + 1;
-    return true;
-  }
-
+  function showResumeQueue()
+    public 
+    view
+    returns (uint entryID, string memory entry_title, string memory degree_descr,
+    string memory institution_name, uint date_received, uint start_date, 
+    uint end_date, string memory review) 
+    {
+    uint _latestID=resume_queues[userIDMaps[msg.sender]][0];
+    entryID = _latestID;
+    entry_title=entries[_latestID].entry_title;
+    degree_descr=entries[_latestID].degree_descr;
+    institution_name=institutions[entries[_latestID].institutionID].name;
+    date_received=entries[_latestID].date_received;
+    start_date=entries[_latestID].start_date;
+    end_date=entries[_latestID].end_date;
+    review=entries[_latestID].review;
+    return (entryID, entry_title, degree_descr, institution_name, date_received,
+    start_date, end_date, review);
+    }    
 
 /*
 
