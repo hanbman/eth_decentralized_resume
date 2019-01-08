@@ -20,6 +20,10 @@ contract Resume {
 
   // ///////////////////////     USERS    ////////////////////////// //
 
+  /* keep a list of valid users */
+  
+  mapping(address => bool) userList;
+  
   /* Creating a public mapping that maps the UserID (a number) to a User. */
     
   mapping (uint => User) public users;
@@ -40,6 +44,10 @@ contract Resume {
 
   // /////////////////////// INSTITUTIONS ////////////////////////// //
 
+  /* keep a list of valid institutions */
+  
+  mapping(address => bool) institutionList;
+  
   /* Creating a public mapping that maps the InstitutionID (a number) to an Instituion. */
     
   mapping (uint => Institution) public institutions;
@@ -150,10 +158,11 @@ contract Resume {
   // /////////////////////// MODIFIERS ////////////////////////// //
   // ////////////////////////////////////////////////////////////// //
 
-    /* A modifer that checks if the msg.sender is the the right address */
     // Do not forget the "_;"! It will
     // be replaced by the actual function
     // body when the modifier is used.
+  
+  /* a set of modifiers to check if an address is a valid admin, user, or institution
   
   modifier verifyAdmin () 
     { 
@@ -161,6 +170,20 @@ contract Resume {
       _;
     }
   
+  modifier verifyUser () 
+    { 
+      require (userList[msg.sender]==true, "Not a valid User.");
+      _;
+    }
+
+  modifier verifyInstitution () 
+    { 
+      require (institutionList[msg.sender]==true, "Not a valid Institution.");
+      _;
+    }
+  
+  /* A modifer that checks if the msg.sender is the the right address */
+
   modifier verifyCaller (address _address) 
     { 
       require (msg.sender == _address, "Message sender is not correct.");
@@ -190,7 +213,15 @@ contract Resume {
     EntryCount=1;
   }
 
-  //function addAdmin(address admin)
+  /* This function lets the owner of the contract add admins to manage the contract */
+  function addAdmin(address admin)
+  public
+  verifyCaller(owner)
+  returns(bool)
+  {
+    admins[admin]=true;
+    emit AddedAdmin(admin)
+  }
   
   /* This function let's users sign up for this service to record their resumes */
   function signUpUser(string memory _name)
