@@ -3,7 +3,7 @@ pragma solidity ^0.5.0;
 contract Resume {
 
   // ////////////////////////////////////////////////////////////// //
-  // /////////////////////// VARIABLES ////////////////////////// //
+  // /////////////////////// DECLARATIONS ////////////////////////// //
   // ////////////////////////////////////////////////////////////// //
 
   /* set owner */
@@ -23,6 +23,10 @@ contract Resume {
   /* keep a list of valid users */
   
   mapping(address => bool) userList;
+  
+  /* Creating a public mapping that maps the user address to the user ID. */
+    
+  mapping (address => uint) public userIDMaps;
   
   /* Creating a public mapping that maps the UserID (a number) to a User. */
     
@@ -47,6 +51,10 @@ contract Resume {
   /* keep a list of valid institutions */
   
   mapping(address => bool) institutionList;
+  
+  /* Creating a public mapping that maps the institution address to the institution ID. */
+    
+  mapping (address => uint) public institutionIDMaps;
   
   /* Creating a public mapping that maps the InstitutionID (a number) to an Instituion. */
     
@@ -75,14 +83,19 @@ contract Resume {
 
   /* Creating a public mapping that maps the UserID (a number) to a resume.
   Each user is mapped to one resume, and joined using UserID
+  There is also a resume_queue for each user of entries that have yet to
+  be approved by the user. 
    */
     
   mapping (uint => uint[]) public resumes;
+  mapping (uint => uint[]) public resume_queues;
 
-  /* Each resume is an array of unique entryids that string together a single resume
+  /* Each resume and resume queue is an array of unique entryids that string 
+  together resumes filled with entries
    */
 
   uint[] the_resume;
+  uint[] resume_queue;
 
   // ////////////////////////////////////////////////////////////// //
 
@@ -104,6 +117,7 @@ contract Resume {
   enum entryType {Degree, Certificate}
   
   /* struct of the entry containing info about the individual entry
+  - recipient- the user who is receiving the entry
   - approved- boolean True/False for if the review is approved by receiver to prevent
   malicious reviews to be added to someone's transcript. Default to False until user goes to 
   approve it and it will be added to their resume. 
@@ -117,6 +131,7 @@ contract Resume {
 
   */
   struct Entry {
+        address recipient;
         bool approved;
         string entry_title;
         string degree_descr;
@@ -132,7 +147,7 @@ contract Resume {
   
 
   // ////////////////////////////////////////////////////////////// //
-  // /////////////////////// END OF VARIABLES ////////////////////////// //
+  // /////////////////////// END OF DECLARATIONS ////////////////////////// //
   // ////////////////////////////////////////////////////////////// //
   
   
@@ -147,6 +162,7 @@ contract Resume {
     event AddedInstitution(uint UniversityID);
     event AddedUser(uint UserID);
     event EntryCreated(uint EntryID);
+    event AddedtoQueue(uint EntryID, uint UserID);
     event AddedtoResume(uint EntryID, uint UserID);
 
   // ////////////////////////////////////////////////////////////// //
@@ -163,7 +179,6 @@ contract Resume {
     // body when the modifier is used.
   
   /* a set of modifiers to check if an address is a valid admin, user, or institution
-  
   modifier verifyAdmin () 
     { 
       require (admins[msg.sender]==true, "This action is prohibited for non Admins.");
@@ -183,10 +198,17 @@ contract Resume {
     }
   
   /* A modifer that checks if the msg.sender is the the right address */
-
   modifier verifyCaller (address _address) 
     { 
       require (msg.sender == _address, "Message sender is not correct.");
+      _;
+    }
+
+  
+  /* A modifer that checks if the address given is a valid user */
+  modifier verifyUserEntry (address _address) 
+    { 
+      require (userList[_address]==true, "Cannot add entry to this user.");
       _;
     }
 
@@ -229,22 +251,81 @@ contract Resume {
   returns(bool)
   {
     users[UserCount] = User({name: _name, date_joined: now, userAddr: msg.sender});
+    userIDMaps[msg.sender]=UserCount;
     emit AddedUser(UserCount);
     UserCount = UserCount + 1;
     return true;
   }
 
-  /* This function let's admins add institutions that are legitimate */
+  /* This function let's admins add institutions that are legitimate, allowing them submit
+  entries for users on the platform*/
   function addInstitution(string memory _name, address _institutionAddr, institutionType _itype) 
   public
   verifyAdmin()
   returns(bool)
   {
+    institutionsIDMaps[_institutionAddr]=InstitutionCount;
     institutions[InstitutionCount] = Institution({name: _name, date_joined: now, itype: _itype, institutionAddr: _institutionAddr});
     emit AddedInstitution(InstitutionCount);
     InstitutionCount = InstitutionCount + 1;
     return true;
   }
+
+  /* This function let's institutions add entries that can go on the resumes of users*/
+  function addEntry(address _recipient, string _entry_title, string _degree_descr, 
+  uint _start_date, uint _end_date, etype _etype, string _review) 
+  public
+  verifyInstitution()
+  verifyUserEntry(_recipient)
+  returns(bool)
+  {
+    /Create the entry
+    _approved=false;
+    _institutionID=institutionsIDMaps[msg.sender];
+    _date_received=now
+    entries[EntryCount] = Entry({recipient: _recipient, approved: _approved,
+    entry_title: _entry_title, degree_descr: _degree_descr, institutionID: _institutionID,
+    date_received: _date_received, start_date: _start_date, end_date: _end_date, 
+    etype: _etype, review=_review});
+    emit EntryCreated(EntryCount);
+
+    /Add entry to the user's resume queue
+    _UserID=userIDMaps[_recipient];
+    resume_queues[_UserID].push(EntryCount);
+    emit AddedtoQueue(EntryCount, _UserID);
+
+    /Advance EntryCount and end function by returning true
+    EntryCount = EntryCount + 1;
+    return true;
+  }
+
+  /* This function let's users approve entries that are given to them 
+  We want to allow institutions to have the right to make the entries-
+  they are less incentivized to be malicious actors since they are approved
+  by admins to become approved institutions. 
+  Users are incentivized to approve the entries by institutions because they want 
+  to build their resume. If they reject it, there must be an identified problem. If they
+  disagree on the entry, they have to take it up with the institution but there is still
+  the mechanism for user to vet entries to prevent entries where mistakes are made.
+  */
+  function approveEntry(address _recipient, string _entry_title, string _degree_descr, 
+  uint _start_date, uint _end_date, etype _etype, string _review) 
+  public
+  verifyInstitution()
+  returns(bool)
+  {
+    _approved=false;
+    _institutionID=institutionsIDMaps[msg.sender];
+    _date_received=now
+    entries[EntryCount] = Entry({recipient: _recipient, approved: _approved,
+    entry_title: _entry_title, degree_descr: _degree_descr, institutionID: _institutionID,
+    date_received: _date_received, start_date: _start_date, end_date: _end_date, 
+    etype: _etype, review=_review});
+    emit AddedEntry(EntryCount);
+    EntryCount = EntryCount + 1;
+    return true;
+  }
+
 
 /*
 
