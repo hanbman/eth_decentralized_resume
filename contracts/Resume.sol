@@ -305,7 +305,7 @@ contract Resume {
   /* This function let's user view the first item in their queue
   No ability to return arrays yet in solidity???
   */
-  function showResumeQueue()
+  function showMyResumeQueue()
     public 
     view
     returns (uint entryID, string memory entry_title, string memory degree_descr,
