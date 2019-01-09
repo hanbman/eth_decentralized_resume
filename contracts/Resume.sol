@@ -1,22 +1,26 @@
 pragma solidity ^0.5.0;
 
-contract Resume {
+import "./Ownable.sol";
+
+contract Resume is Ownable {
 
   // ////////////////////////////////////////////////////////////// //
   // /////////////////////// DECLARATIONS ////////////////////////// //
   // ////////////////////////////////////////////////////////////// //
 
   /* set owner */
-  address owner;
+  address private _owner;
 
   /* keep track of the users, institutions, and entries */
-  uint UserCount;
-  uint InstitutionCount;
-  uint EntryCount;
+  uint private UserCount;
+  uint private InstitutionCount;
+  uint private EntryCount;
 
   /* keep a list of Admins that can add universities, users, entries */
   
-  mapping(address => bool) admins;
+  mapping(address => bool) private admins;
+
+  /* uint public transcript_price;
 
   // ///////////////////////     USERS    ////////////////////////// //
 
@@ -89,6 +93,10 @@ contract Resume {
     
   mapping (uint => uint[]) public resumes;
   mapping (uint => uint[]) public resume_queues;
+  
+  /* This maps user id to entry id in a user queue so we can check if an entry
+  exists in a user queue*/
+  mapping (uint ==> uint) private queueMaps;
 
   /* Each resume and resume queue is an array of unique entryids that string 
   together resumes filled with entries
@@ -159,11 +167,13 @@ contract Resume {
   /* Create events*/
 
     event AddedAdmin(address adminAddr);
+    event SetPrice(uint price);
     event AddedInstitution(uint UniversityID);
     event AddedUser(uint UserID);
     event EntryCreated(uint EntryID);
     event AddedtoQueue(uint EntryID, uint UserID);
     event AddedtoResume(uint EntryID, uint UserID);
+    event EntryRejected(uint EntryID, uint UserID);
 
   // ////////////////////////////////////////////////////////////// //
   // /////////////////////// END OF EVENTS ////////////////////////// //
@@ -178,6 +188,12 @@ contract Resume {
     // be replaced by the actual function
     // body when the modifier is used.
   
+  /* This check to see if caller is the owner. Inherited from ownable contract*/
+  modifier onlyOwner() {
+        require(isOwner(), "This action is prohibited for non Owner.");
+        _;
+    }
+
   /* a set of modifiers to check if an address is a valid admin, user, or institution*/
   modifier verifyAdmin () 
     { 
@@ -212,6 +228,29 @@ contract Resume {
       _;
     }
 
+  /* A modifer that checks if queue for a user is empty */
+  modifier verifyQueueEmpty (address _address) 
+    { 
+      uint private queue_length= resume_queues[userIDMaps[_address]].length;
+      require (queue_length>0, "There are no entries in your queue.");
+      _;
+    }
+
+  /* A modifer that checks if the user is trying to approve their own entry */
+  modifier verifyUserApproval (uint _UserID)
+    { 
+      require (_UserID==userIDMaps[msg.sender], "This entry is not assigned to you.");
+      _;
+    }
+
+  /* A modifer that checks if entry is first entry in queue */
+  modifier verifyNextEntryUp (uint _EntryID)
+    { 
+      require (_EntryID==resume_queues[userIDMaps[msg.sender]][0], 
+      "This entry is not the next one in your queue.");
+      _;
+    }
+
   // ////////////////////////////////////////////////////////////// //
   // /////////////////////// END OF MODIFIERS ////////////////////////// //
   // ////////////////////////////////////////////////////////////// //
@@ -228,21 +267,32 @@ contract Resume {
   constructor() payable public {
     /* Set the owner as the person who instantiated the contract
     Set the counts of Users, Institions, and Entries to 0. */
-    owner=msg.sender;
-    admins[owner]=true;
+    _owner=msg.sender;
+    admins[_owner]=true;
     UserCount=1;
     InstitutionCount=1;
     EntryCount=1;
+    transcript_price=0;
   }
 
   /* This function lets the owner of the contract add admins to manage the contract */
   function addAdmin(address admin)
   public
-  verifyCaller(owner)
+  onlyOwner()
   returns(bool)
   {
     admins[admin]=true;
     emit AddedAdmin(admin);
+    return true;
+  }
+
+  function setTranscriptPrice(uint _price)
+  public
+  onlyOwner()
+  returns(bool)
+  {
+    transcript_price=_price;
+    emit SetPrice(_price);
     return true;
   }
   
@@ -292,13 +342,47 @@ contract Resume {
     etype: _etype, review: _review});
     emit EntryCreated(EntryCount);
 
-    //Add entry to the user's resume queue
+    //Add entry to the user's resume queue and map to user
     uint _UserID=userIDMaps[_recipient];
     resume_queues[_UserID].push(EntryCount);
+    queueMaps[EntryCount]=_UserID;
     emit AddedtoQueue(EntryCount, _UserID);
 
     //Advance EntryCount and end function by returning true
     EntryCount = EntryCount + 1;
+    return true;
+  }
+
+  /* This function let's users approve entries in their resume queue
+  Once the entry is approved, it moves from resume queue to the offical resume
+  If it rejected, then we just remove it from the queue
+  */
+  function approveEntry(uint _entryID, bool _doYouWantToApprove)
+  public
+  verifyUserApproval(queueMaps[_entryID])
+  verifyQueueEmpty(msg.sender)
+  verifyNextEntryUp (_entryID)
+  returns(bool)
+  {
+    _nextEntryID=resume_queues[userIDMaps[msg.sender]][0];
+    uint _length=resume_queues[userIDMaps[msg.sender]].length
+    /* The first element of the queue is removed
+    and we shift all other elements up one and reduce size of array by 1
+    for (uint i = 0; i < resume_queues[_length - 1; i++) 
+    {
+      resume_queues[userIDMaps[msg.sender]][i]=resume_queues[userIDMaps[msg.sender]][i+1];
+    }
+    delete resume_queues[userIDMaps[msg.sender]][_length-1];
+    resume_queues[userIDMaps[msg.sender]].length--;
+    if (_doYouWantToApprove==true)
+    {
+      resumes[userIDMaps[msg.sender]].push(_nextEntryID);
+      emit AddedtoResume(_entryID, userIDMaps[msg.sender]);
+    }
+    else
+    {
+      emit EntryRejected(_entryID, userIDMaps[msg.sender]);
+    }
     return true;
   }
 
@@ -308,6 +392,8 @@ contract Resume {
   function showMyResumeQueue()
     public 
     view
+    verifyUser()
+    verifyQueueEmpty(msg.sender)
     returns (uint entryID, string memory entry_title, string memory degree_descr,
     string memory institution_name, uint date_received, uint start_date, 
     uint end_date, string memory review) 
@@ -323,7 +409,18 @@ contract Resume {
     review=entries[_latestID].review;
     return (entryID, entry_title, degree_descr, institution_name, date_received,
     start_date, end_date, review);
-    }    
+    }
+
+  /* This function let's the owner check who is an admin
+  */
+  function isAdmin(address _adminAddr)
+    public
+    view 
+    onlyOwner()
+    returns (bool) 
+    {
+    return (admins[_adminAddr])
+    }        
 
 /*
 
