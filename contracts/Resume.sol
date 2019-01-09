@@ -20,7 +20,7 @@ contract Resume is Ownable {
   
   mapping(address => bool) private admins;
 
-  /* uint public transcript_price;
+  uint public transcript_price;
 
   // ///////////////////////     USERS    ////////////////////////// //
 
@@ -96,7 +96,7 @@ contract Resume is Ownable {
   
   /* This maps user id to entry id in a user queue so we can check if an entry
   exists in a user queue*/
-  mapping (uint ==> uint) private queueMaps;
+  mapping (uint => uint) private queueMaps;
 
   /* Each resume and resume queue is an array of unique entryids that string 
   together resumes filled with entries
@@ -231,7 +231,7 @@ contract Resume is Ownable {
   /* A modifer that checks if queue for a user is empty */
   modifier verifyQueueEmpty (address _address) 
     { 
-      uint private queue_length= resume_queues[userIDMaps[_address]].length;
+      uint queue_length= resume_queues[userIDMaps[_address]].length;
       require (queue_length>0, "There are no entries in your queue.");
       _;
     }
@@ -364,11 +364,11 @@ contract Resume is Ownable {
   verifyNextEntryUp (_entryID)
   returns(bool)
   {
-    _nextEntryID=resume_queues[userIDMaps[msg.sender]][0];
-    uint _length=resume_queues[userIDMaps[msg.sender]].length
+    uint _nextEntryID=resume_queues[userIDMaps[msg.sender]][0];
+    uint _length=resume_queues[userIDMaps[msg.sender]].length;
     /* The first element of the queue is removed
-    and we shift all other elements up one and reduce size of array by 1
-    for (uint i = 0; i < resume_queues[_length - 1; i++) 
+    and we shift all other elements up one and reduce size of array by 1*/
+    for (uint i = 0; i < (_length - 1); i++) 
     {
       resume_queues[userIDMaps[msg.sender]][i]=resume_queues[userIDMaps[msg.sender]][i+1];
     }
@@ -419,7 +419,7 @@ contract Resume is Ownable {
     onlyOwner()
     returns (bool) 
     {
-    return (admins[_adminAddr])
+    return (admins[_adminAddr]);
     }        
 
 /*
