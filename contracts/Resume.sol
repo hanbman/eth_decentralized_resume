@@ -245,8 +245,8 @@ contract Resume is Ownable {
   /* A modifer that checks if the resume for a user is empty */
   modifier verifyResumeEmpty (uint _UserID) 
     { 
-      uint resumeLength= resumes[_UserID].length;
-      require (resume_length>0, "There are no entries in this user's resume.");
+      uint _resumeLength = resumes[_UserID].length;
+      require (_resumeLength>0, "There are no entries in this user's resume.");
       _;
     }
 
@@ -259,9 +259,10 @@ contract Resume is Ownable {
     }
 
   /* A modifer that checks if the resume entry to view has been approved by the user */
-  modifier verifyApproved (_entryElement)
+  modifier verifyApproved (uint _entryElement)
     {
       require(entries[_entryElement].approved==true, "This entry has not been approved for viewing");
+      _;
     }
 
   /* A modifer that checks if the user is trying to approve an entry that is assigned to them */
@@ -470,15 +471,14 @@ contract Resume is Ownable {
     string memory institution_name, uint date_received, uint start_date, 
     uint end_date, string memory review)
     {
-    uint _viewEntryID=resumes[_UserID][_entryElement];
-    entryID = _viewEntryID;
-    entry_title=entries[_viewEntryID].entry_title;
-    degree_descr=entries[_viewEntryID].degree_descr;
-    institution_name=institutions[entries[_viewEntryID].institutionID].name;
-    date_received=entries[_viewEntryID].date_received;
-    start_date=entries[_viewEntryID].start_date;
-    end_date=entries[_viewEntryID].end_date;
-    review=entries[_viewEntryID].review;
+    entryID=resumes[_UserID][_entryElement];
+    entry_title=entries[entryID].entry_title;
+    degree_descr=entries[entryID].degree_descr;
+    institution_name=institutions[entries[entryID].institutionID].name;
+    date_received=entries[entryID].date_received;
+    start_date=entries[entryID].start_date;
+    end_date=entries[entryID].end_date;
+    review=entries[entryID].review;
     return (entryID, entry_title, degree_descr, institution_name, date_received,
     start_date, end_date, review);
     }
@@ -500,7 +500,7 @@ contract Resume is Ownable {
   to see how many entries to look through to view entire resume of the user
   This function should be used before using viewResume function
   */
-  function checkResumeSize(uint _userID)
+  function checkResumeSize(uint _UserID)
     public
     view 
     verifyViewUserResume (_UserID)
@@ -530,8 +530,8 @@ contract Resume is Ownable {
     verifyUser()
     returns (uint _UserID)
     {
-    return (userList[msg.sender]);
-    }          
+    return (userIDMaps[msg.sender]);
+    }      
 
 /*
 
