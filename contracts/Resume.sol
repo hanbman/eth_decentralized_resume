@@ -220,7 +220,13 @@ contract Resume is Ownable {
       _;
     }
 
-  
+    /* A modifer that checks if the userID that you are trying to view exists */
+  modifier verifyViewUserResume (uint _UserID) 
+    { 
+      require (userList[users[_UserID].userAddr]==true, "This ID is not a valid user.");
+      _;
+    }
+
   /* A modifer that checks if the address given is a valid user */
   modifier verifyUserEntry (address _address) 
     { 
@@ -236,7 +242,29 @@ contract Resume is Ownable {
       _;
     }
 
-  /* A modifer that checks if the user is trying to approve their own entry */
+  /* A modifer that checks if the resume for a user is empty */
+  modifier verifyResumeEmpty (uint _UserID) 
+    { 
+      uint resumeLength= resumes[_UserID].length;
+      require (resume_length>0, "There are no entries in this user's resume.");
+      _;
+    }
+
+  /* A modifer that checks if the element of a resume to view is in bounds */
+  modifier verifyResumeEntryExists (uint _UserID, uint _entryElement) 
+    { 
+      uint _resumeLength= resumes[_UserID].length;
+      require (_entryElement<_resumeLength, "This entry element does not exist for this user.");
+      _;
+    }
+
+  /* A modifer that checks if the resume entry to view has been approved by the user */
+  modifier verifyApproved (_entryElement)
+    {
+      require(entries[_entryElement].approved==true, "This entry has not been approved for viewing");
+    }
+
+  /* A modifer that checks if the user is trying to approve an entry that is assigned to them */
   modifier verifyUserApproval (uint _UserID)
     { 
       require (_UserID==userIDMaps[msg.sender], "This entry is not assigned to you.");
@@ -355,7 +383,10 @@ contract Resume is Ownable {
 
   /* This function let's users approve entries in their resume queue
   Once the entry is approved, it moves from resume queue to the offical resume
-  If it rejected, then we just remove it from the queue
+  If it rejected, then we just remove it from the queue.
+  This requires user to enter in the that the entry they are trying to edit
+  is the next entry up in their queue so they are aware which one they are approving
+  or rejecting.
   */
   function approveEntry(uint _entryID, bool _doYouWantToApprove)
   public
@@ -376,6 +407,7 @@ contract Resume is Ownable {
     resume_queues[userIDMaps[msg.sender]].length--;
     if (_doYouWantToApprove==true)
     {
+      entries[_nextEntryID].approved=true;
       resumes[userIDMaps[msg.sender]].push(_nextEntryID);
       emit AddedtoResume(_entryID, userIDMaps[msg.sender]);
     }
@@ -387,6 +419,9 @@ contract Resume is Ownable {
   }
 
   /* This function let's user view the first item in their queue
+  After viewing, the user should call the approveEntry function to approve or disapprove 
+  and then this will remove the entry either adding it to their official resume or removing it 
+  from the queue. This is the only way to view the next entry in their queue
   No ability to return arrays yet in solidity???
   */
   function showMyResumeQueue()
@@ -411,6 +446,71 @@ contract Resume is Ownable {
     start_date, end_date, review);
     }
 
+  /* This function let's an external party view a user's offical resume
+  This allows:
+  1. A user to view their own resume
+  2. A third party such as a company performing a background check to validate a resume
+  It takes in the userID of the person you want to view, and the number of element of the resume
+  to return.
+  Since there is no good way to return an array of undefined size, and on top of that
+  no good way to return an array of structs, we will allow the function caller to choose
+  which element to view of a user's resume, starting with element 0. Element 0 will be the
+  oldest entry added to a resume, while element resume.length-1 will be the newest entry. 
+  It is useful to run the checkResumeSize function first to see how big the resume is 
+  to choose which element to view.
+  */
+  function viewResume(uint _UserID, uint _entryElement)
+    public 
+    view
+    verifyViewUserResume (_UserID)
+    verifyResumeEmpty (_UserID)
+    verifyResumeEntryExists (_UserID, _entryElement)
+    verifyApproved(_entryElement)
+    returns (uint entryID, string memory entry_title, string memory degree_descr,
+    string memory institution_name, uint date_received, uint start_date, 
+    uint end_date, string memory review)
+    {
+    uint _viewEntryID=resumes[_UserID][_entryElement];
+    entryID = _viewEntryID;
+    entry_title=entries[_viewEntryID].entry_title;
+    degree_descr=entries[_viewEntryID].degree_descr;
+    institution_name=institutions[entries[_viewEntryID].institutionID].name;
+    date_received=entries[_viewEntryID].date_received;
+    start_date=entries[_viewEntryID].start_date;
+    end_date=entries[_viewEntryID].end_date;
+    review=entries[_viewEntryID].review;
+    return (entryID, entry_title, degree_descr, institution_name, date_received,
+    start_date, end_date, review);
+    }
+
+  /* This function let's a user check the size of their own queue so they know 
+  if they need to clear entries in their queue
+  */
+  function checkQueueSize()
+    public
+    view 
+    verifyUser()
+    verifyQueueEmpty(msg.sender)
+    returns (uint _queueSize)
+    {
+    return (resume_queues[userIDMaps[msg.sender]].length);
+    }
+
+  /* This function let's someone check the size of the resume of a user
+  to see how many entries to look through to view entire resume of the user
+  This function should be used before using viewResume function
+  */
+  function checkResumeSize(uint _userID)
+    public
+    view 
+    verifyViewUserResume (_UserID)
+    verifyResumeEmpty (_UserID)
+    returns (uint _resumeSize)
+    {
+    return (resumes[userIDMaps[msg.sender]].length);
+    }  
+  
+  
   /* This function let's the owner check who is an admin
   */
   function isAdmin(address _adminAddr)
@@ -420,7 +520,18 @@ contract Resume is Ownable {
     returns (bool) 
     {
     return (admins[_adminAddr]);
-    }        
+    }
+
+   /* This function let's a user check their own userID
+  */
+  function checkUserID()
+    public
+    view 
+    verifyUser()
+    returns (uint _UserID)
+    {
+    return (userList[msg.sender]);
+    }          
 
 /*
 
