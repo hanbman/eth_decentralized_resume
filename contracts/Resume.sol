@@ -104,8 +104,8 @@ contract Resume is Ownable {
   together resumes filled with entries
    */
 
-  uint[] public the_resume;
-  uint[] public resume_queue;
+  uint[] the_resume;
+  uint[] resume_queue;
 
   // ////////////////////////////////////////////////////////////// //
 
@@ -278,9 +278,10 @@ contract Resume is Ownable {
     }
 
   /* A modifer that checks if the resume entry to view has been approved by the user */
-  modifier verifyApproved (uint _entryElement)
+  modifier verifyApproved (uint _UserID, uint _entryElement)
     {
-      require(entries[_entryElement].approved==true, "This entry has not been approved for viewing");
+      
+      require(entries[resumes[_UserID][_entryElement]].approved==true, "This entry has not been approved for viewing");
       _;
     }
 
@@ -429,6 +430,7 @@ contract Resume is Ownable {
     }
     delete resume_queues[userIDMaps[msg.sender]][_length-1];
     resume_queues[userIDMaps[msg.sender]].length--;
+    /* Now we add the entry to the resume if it is approved */
     if (_doYouWantToApprove==true)
     {
       entries[_nextEntryID].approved=true;
@@ -489,7 +491,7 @@ contract Resume is Ownable {
     verifyViewUserResume (_UserID)
     verifyResumeEmpty (_UserID)
     verifyResumeEntryExists (_UserID, _entryElement)
-    verifyApproved(_entryElement)
+    // verifyApproved(_UserID, _entryElement)
     returns (uint entryID 
     ,string memory entry_title 
     ,string memory degree_descr
