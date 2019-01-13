@@ -20,10 +20,12 @@ contract Resume is Ownable {
   
   mapping(address => bool) private admins;
 
-  uint public transcript_price;
-
   // ///////////////////////     USERS    ////////////////////////// //
 
+  /* when users sign up to be on the platform, they have to pay a set fee */
+  
+  uint public user_signup_fee;
+  
   /* keep a list of valid users */
   
   mapping(address => bool) userList;
@@ -167,6 +169,7 @@ contract Resume is Ownable {
   /* Create events*/
 
     event AddedAdmin(address adminAddr);
+    event SignUpFeeSet(uint _fee);
     event SetPrice(uint price);
     event AddedInstitution(uint UniversityID);
     event AddedUser(uint UserID);
@@ -227,6 +230,22 @@ contract Resume is Ownable {
       _;
     }
 
+  modifier paidEnough()
+    { 
+      require(msg.value >= user_signup_fee, "Not paid enough to sign up as a user."); 
+      _;
+    }
+    
+  modifier checkValue() 
+    {
+    //refund them after pay for item (why it is before, _ checks for logic before func)
+      _;
+      uint amountToRefund = msg.value - user_signup_fee;
+      if (amountToRefund>0)
+          msg.sender.transfer(amountToRefund);
+    }
+
+  
   /* A modifer that checks if the address given is a valid user */
   modifier verifyUserEntry (address _address) 
     { 
@@ -301,7 +320,7 @@ contract Resume is Ownable {
     UserCount=1;
     InstitutionCount=1;
     EntryCount=1;
-    transcript_price=0;
+    user_signup_fee=0;
   }
 
   /* This function lets the owner of the contract add admins to manage the contract */
@@ -314,20 +333,24 @@ contract Resume is Ownable {
     emit AddedAdmin(admin);
     return true;
   }
-
-  function setTranscriptPrice(uint _price)
+  
+  /* This function lets the owner of the contract set the sign up fee for new users */
+  function setSignUpFee(uint _fee)
   public
   onlyOwner()
   returns(bool)
   {
-    transcript_price=_price;
-    emit SetPrice(_price);
+    user_signup_fee=_fee;
+    emit SignUpFeeSet(_fee);
     return true;
   }
   
   /* This function let's users sign up for this service to record their resumes */
   function signUpUser(string memory _name)
   public
+  payable
+  paidEnough ()
+  checkValue ()
   returns(bool)
   {
     users[UserCount] = User({name: _name, date_joined: now, userAddr: msg.sender});
@@ -467,20 +490,34 @@ contract Resume is Ownable {
     verifyResumeEmpty (_UserID)
     verifyResumeEntryExists (_UserID, _entryElement)
     verifyApproved(_entryElement)
-    returns (uint entryID, string memory entry_title, string memory degree_descr,
-    string memory institution_name, uint date_received, uint start_date, 
-    uint end_date, string memory review)
+    returns (uint entryID 
+    ,string memory entry_title 
+    ,string memory degree_descr
+    ,string memory institution_name 
+    ,uint date_received 
+    // ,uint start_date 
+    // ,uint end_date 
+    // ,string memory review
+    )
     {
     entryID=resumes[_UserID][_entryElement];
     entry_title=entries[entryID].entry_title;
     degree_descr=entries[entryID].degree_descr;
     institution_name=institutions[entries[entryID].institutionID].name;
     date_received=entries[entryID].date_received;
-    start_date=entries[entryID].start_date;
-    end_date=entries[entryID].end_date;
-    review=entries[entryID].review;
-    return (entryID, entry_title, degree_descr, institution_name, date_received,
-    start_date, end_date, review);
+    // start_date=entries[entryID].start_date;
+    // end_date=entries[entryID].end_date;
+    // review=entries[entryID].review;
+    return (
+    entryID
+    , entry_title
+    , degree_descr
+    , institution_name
+    , date_received
+    // , start_date
+    // , end_date
+    // , review
+    );
     }
 
   /* This function let's a user check the size of their own queue so they know 
@@ -532,67 +569,6 @@ contract Resume is Ownable {
     {
     return (userIDMaps[msg.sender]);
     }      
-
-/*
-
-  /* Add a keyword so the function can be paid. This function should transfer money
-    to the seller, set the buyer as the person who called this transaction, and set the state
-    to Sold. Be careful, this function should use 3 modifiers to check if the item is for sale,
-    if the buyer paid enough, and check the value after the function is called to make sure the buyer is
-    refunded any excess ether sent. Remember to call the event associated with this function!*/
-
-  function buyItem(uint _sku)
-    public
-    payable
-    forSale (_sku)
-    paidEnough (items[_sku].price)
-    checkValue (_sku)
-  {
-    items[_sku].seller.transfer(items[_sku].price);
-    items[_sku].buyer=msg.sender;
-    items[_sku].state=State.Sold;
-    emit Sold(_sku);
-  }
-
-  /* Add 2 modifiers to check if the item is sold already, and that the person calling this function
-  is the seller. Change the state of the item to shipped. Remember to call the event associated with this function!*/
-  function shipItem(uint _sku)
-    public
-    sold (_sku)
-    verifyCaller(items[_sku].seller)
-  {
-    items[_sku].state=State.Shipped;
-    emit Shipped(_sku);
-  }
-
-  /* Add 2 modifiers to check if the item is shipped already, and that the person calling this function
-  is the buyer. Change the state of the item to received. Remember to call the event associated with this function!*/
-  function receiveItem(uint _sku)
-    public
-    shipped (_sku)
-    verifyCaller(items[_sku].buyer)
-  {
-    items[_sku].state=State.Received;
-    emit Received(_sku);
-  }
-
-  /* We have these functions completed so we can run tests, just ignore it :) */
-  function fetchItem(uint _sku) 
-  public 
-  view 
-  returns (string memory name, uint sku, uint price, uint state, address seller, address buyer) 
-  {
-    name = items[_sku].name;
-    sku = items[_sku].sku;
-    price = items[_sku].price;
-    state = uint(items[_sku].state);
-    seller = items[_sku].seller;
-    buyer = items[_sku].buyer;
-    return (name, sku, price, state, seller, buyer);
-  }
-
-*/
-
 
   // ////////////////////////////////////////////////////////////// //
   // /////////////////////// END OF FUNCTIONS ////////////////////////// //
