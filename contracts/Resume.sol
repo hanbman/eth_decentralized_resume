@@ -1,13 +1,21 @@
 pragma solidity ^0.5.0;
 
 import "./Ownable.sol";
+import "./BokkyPooBahsDateTimeLibrary.sol";
+import "./SafeMath.sol";
 
 contract Resume is Ownable {
 
+  // The following libraries were found here https://github.com/ConsenSys/ethereum-developer-tools-list
+  // Specify that this contract uses SafeMath library for operations involving uint
+  using SafeMath for uint;
+  
+  // Specify that this contract uses BokkyPooBahsDateTimeLibrary for operations involving uint
+  using BokkyPooBahsDateTimeLibrary for uint;
+  
   // ////////////////////////////////////////////////////////////// //
   // /////////////////////// DECLARATIONS ////////////////////////// //
   // ////////////////////////////////////////////////////////////// //
-  
 
   /* set owner */
   address private _owner;
@@ -241,7 +249,8 @@ contract Resume is Ownable {
     {
     //refund them after pay for item (why it is before, _ checks for logic before func)
       _;
-      uint amountToRefund = msg.value - user_signup_fee;
+      //uses the safemath library subtraction function
+      uint amountToRefund = (msg.value).sub(user_signup_fee);
       if (amountToRefund>0)
           msg.sender.transfer(amountToRefund);
     }
@@ -571,7 +580,26 @@ contract Resume is Ownable {
     returns (uint _UserID)
     {
     return (userIDMaps[msg.sender]);
-    }      
+    } 
+    
+  /* This function let's a user check when they signed up
+  This uses an imported date time library
+  */
+  function checkSignUpDate()
+    public
+    view 
+    verifyUser()
+    returns (uint _year, uint _month, uint _day)
+    {
+    uint _timestamp=users[userIDMaps[msg.sender]].date_joined;
+    _year=BokkyPooBahsDateTimeLibrary.getYear(_timestamp);
+    _month=BokkyPooBahsDateTimeLibrary.getMonth(_timestamp);
+    _day=BokkyPooBahsDateTimeLibrary.getDay(_timestamp);
+    return (
+    _year
+    , _month
+    , _day);
+    }
 
   // ////////////////////////////////////////////////////////////// //
   // /////////////////////// END OF FUNCTIONS ////////////////////////// //
