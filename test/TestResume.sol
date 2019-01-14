@@ -2,9 +2,9 @@ pragma solidity ^0.5.0;
 
 import "truffle/Assert.sol";
 import "truffle/DeployedAddresses.sol";
-import "../contracts/SupplyChain.sol";
+import "../contracts/Resume.sol";
 
-contract TestSupplyChain {
+contract TestResume {
 
     // Test for failing conditions in this contracts
     // test that every modifier is working

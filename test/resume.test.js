@@ -9,9 +9,9 @@ Try again
 
 */
 
-var SupplyChain = artifacts.require('SupplyChain')
+var Resume = artifacts.require('Resume')
 
-contract('SupplyChain', function(accounts) {
+contract('Resume', function(accounts) {
 
     const owner = accounts[0]
     const alice = accounts[1]

@@ -512,23 +512,23 @@ contract Resume is Ownable {
       // ,string memory review
       )
     {
-      entryID=resumes[_UserID][_entryElement];
-      entry_title=entries[entryID].entry_title;
-      degree_descr=entries[entryID].degree_descr;
-      institution_name=institutions[entries[entryID].institutionID].name;
-      date_received=entries[entryID].date_received;
+        entryID = resumes[_UserID][_entryElement];
+        entry_title = entries[entryID].entry_title;
+        degree_descr = entries[entryID].degree_descr;
+        institution_name = institutions[entries[entryID].institutionID].name;
+        date_received = entries[entryID].date_received;
       // start_date=entries[entryID].start_date;
       // end_date=entries[entryID].end_date;
       // review=entries[entryID].review;
-      return (
-      entryID
-      , entry_title
-      , degree_descr
-      , institution_name
-      , date_received
-      // , start_date
-      // , end_date
-      // , review
+        return (
+        entryID
+        , entry_title
+        , degree_descr
+        , institution_name
+        , date_received
+        // , start_date
+        // , end_date
+        // , review
         );
     }
 
