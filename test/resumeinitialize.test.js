@@ -10,8 +10,10 @@ contract('Resume', function(accounts) {
     it("owner of the contract should be able to sign up admins", async() => {
         const resume = await Resume.deployed()
 
-        const alice_admin = await resume.addAdmin(alice, {from: owner})
+        const alice_added = await resume.addAdmin(alice, {from: owner})
+        const alice_admin = await resume.admins(alice, {from: owner})
 
-        assert.equal(alice_admin, alice, 'owner was unable to add an admin')
+        assert.equal(alice_added, true, 'owner was unable to add an admin')
+        assert.equal(alice_admin, true, 'alice was not added as admin')
     })
 })
