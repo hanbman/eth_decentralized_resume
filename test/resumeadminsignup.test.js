@@ -7,7 +7,7 @@ contract('Resume', function(accounts) {
     const bob = accounts[2]
     const emptyAddress = '0x0000000000000000000000000000000000000000'
 
-    it("owner of the contract should be able to sign up admins", async() => {
+    it("Owner of the contract should be able to sign up admins, and verify who is an admin.", async() => {
         const resume = await Resume.deployed()
 
         const alice_added = await resume.addAdmin(alice, {from: owner})
