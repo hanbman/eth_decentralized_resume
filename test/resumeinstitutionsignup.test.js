@@ -13,7 +13,7 @@ contract('Resume', function(accounts) {
         
         const inst_name = "School of Hard Knocks"
         const type = 1
-        const bob_added = await resume.addAdmin(inst_name, bob, type, {from: alice})
+        const bob_added = await resume.addInstitution(inst_name, bob, type, {from: alice})
 
         assert.equal(bob_added.logs[0].event, "AddedInstitution", 'admin was unable to add an institution')
         assert.equal(bob_added.logs[0].args.InstitutionCount, 1, 'institution was added as with instution ID as 1')
