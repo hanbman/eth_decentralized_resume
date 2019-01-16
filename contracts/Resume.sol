@@ -178,7 +178,7 @@ contract Resume is Ownable {
     /* Create events*/
 
     event AddedAdmin(address adminAddr);
-    event SignUpFeeSet(uint _fee);
+    event SignUpFeeSet(uint fee);
     event SetPrice(uint price);
     event AddedInstitution(uint UniversityID);
     event AddedUser(uint UserID);
