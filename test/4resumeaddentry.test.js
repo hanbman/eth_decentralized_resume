@@ -51,9 +51,6 @@ contract('Resume', function(accounts) {
             //ashley can now check the size of her queue and see entries in her queue
             const queue_size = await resume.checkQueueSize({from: ashley})
             const queue = await resume.showMyResumeQueue({from: ashley})
-
-            entryID, entry_title, degree_descr, institution_name, date_received,
-            start_date, end_date, review
             
             assert.equal(add_entry.logs[0].event, "EntryCreated", 'institution was unable to create entry')
             assert.equal(add_entry.logs[0].args.EntryID, 1, 'EntryID not set to 1')
