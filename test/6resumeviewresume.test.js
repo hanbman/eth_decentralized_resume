@@ -70,7 +70,7 @@ contract('Resume', function(accounts) {
             assert.equal(resumeSize, 1, 'resume size is not 1')
 
             assert.equal(ashleysResume.entry_title, _entry_title, 'entry title does not match')
-            assert.equal(ashleysResume.degree_desc, _degree_descr, 'degree description does not match')
+            assert.equal(ashleysResume.degree_descr, _degree_descr, 'degree description does not match')
             assert.equal(ashleysResume.institution_name, inst_name, 'institution name does not match')
         })
 
