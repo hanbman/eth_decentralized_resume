@@ -556,7 +556,7 @@ contract Resume is Ownable {
       verifyResumeEmpty (_UserID)
       returns (uint _resumeSize)
     {
-        return (resumes[userIDMaps[msg.sender]].length);
+        return (resumes[_UserID].length);
     }  
     
     
