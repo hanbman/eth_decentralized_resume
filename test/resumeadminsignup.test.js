@@ -26,5 +26,5 @@ contract('Resume', function(accounts) {
             assert.equal(alice_added.logs[0].event, "AddedAdmin", 'owner was unable to add an admin')
             assert.equal(alice_admin, true, 'alice was not added as admin')
         })
-    }
+    })
 })
