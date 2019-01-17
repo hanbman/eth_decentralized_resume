@@ -67,7 +67,7 @@ contract('Resume', function(accounts) {
             const resumeSize = await resume.checkResumeSize(_UserID, {from: employer})
             const ashleysResume = await resume.viewResume(_UserID, _entryElement, {from: employer})
 
-            assert.equal(resumeSize._resumeSize, 1, 'resume size is not 1')
+            assert.equal(resumeSize, 1, 'resume size is not 1')
 
             assert.equal(ashleysResume.entry_title, _entry_title, 'entry title does not match')
             assert.equal(ashleysResume.degree_desc, _degree_descr, 'degree description does not match')
