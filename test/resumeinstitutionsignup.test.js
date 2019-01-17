@@ -8,14 +8,18 @@ contract('Resume', function(accounts) {
     const emptyAddress = '0x0000000000000000000000000000000000000000'
 
     it("Admins should be able to add institutions.", async() => {
+        //deploy contract
         const resume = await Resume.deployed()
+        //owner adds alice as an admin
         await resume.addAdmin(alice, {from: owner})
         
+        //set institution parameters
         const inst_name = "School of Hard Knocks"
         const type = 1
+        //alice adds bob as an institution with type=1 (school)
         const bob_added = await resume.addInstitution(inst_name, bob, type, {from: alice})
 
         assert.equal(bob_added.logs[0].event, "AddedInstitution", 'admin was unable to add an institution')
-        assert.equal(bob_added.logs[0].args.UniversityID, 1, 'institution was added as with instution ID as 1')
+        assert.equal(bob_added.logs[0].args.UniversityID, 1, 'institution was not added with instution ID as 1')
     })
 })
