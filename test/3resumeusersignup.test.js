@@ -22,12 +22,12 @@ contract('Resume', function(accounts) {
             //deploy the contract
             const resume = await Resume.deployed()
             //owner adds alice as admin
-            await resume.addAdmin(alice, {from: owner})
+            //await resume.addAdmin(alice, {from: owner})
             //set parameters of institution
-            const inst_name = "School of Hard Knocks"
-            const type = 1
+            //const inst_name = "School of Hard Knocks"
+            //const type = 1
             //alice adds bob as an institution
-            await resume.addInstitution(inst_name, bob, type, {from: alice})
+           // await resume.addInstitution(inst_name, bob, type, {from: alice})
 
             //owner sets the sign up fee for new users
             const fee = 10
