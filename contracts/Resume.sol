@@ -17,6 +17,27 @@ contract Resume is Ownable {
     // /////////////////////// DECLARATIONS ////////////////////////// //
     // ////////////////////////////////////////////////////////////// //
 
+    // no underscores between words
+    // lower case starting and then upper case for first variables unless they are structs
+    /// use triple slash for functions
+    // no long comments
+
+    //design choices
+    //public and private variables
+    //view functions
+    //payable or not payable
+    // why use only one entry returned for queue, and why do I need to shift the list so lists dont grow out of control
+    // looping is just to keep the order of the array
+
+
+    //loops- 
+    // loops happen in javascript- individual transactions
+    // batch sizes
+    // good to do for future- link lists- send you link
+    // pass in the queue element of current entry and delete the first entry
+
+
+    
     /* set owner */
     address private _owner;
 
