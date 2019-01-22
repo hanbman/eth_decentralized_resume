@@ -1,12 +1,12 @@
 pragma solidity ^0.5.0;
 
-// The following libraries were found here https://github.com/ConsenSys/ethereum-developer-tools-list
 import "./Ownable.sol";
 import "./BokkyPooBahsDateTimeLibrary.sol";
 import "./SafeMath.sol";
 
 contract Resume is Ownable {
 
+    // The following libraries were found here https://github.com/ConsenSys/ethereum-developer-tools-list
     // Specify that this contract uses SafeMath library for operations involving uint
     using SafeMath for uint;
   
@@ -47,20 +47,25 @@ contract Resume is Ownable {
     uint private EntryCount;
 
     /* keep a list of Admins that can add universities, users, entries */
+    
     mapping(address => bool) private admins;
 
     // ///////////////////////     USERS    ////////////////////////// //
 
     /* when users sign up to be on the platform, they have to pay a set fee */
+    
     uint public user_signup_fee;
     
     /* keep a list of valid users */
+    
     mapping(address => bool) userList;
     
     /* Creating a public mapping that maps the user address to the user ID. */
+      
     mapping (address => uint) userIDMaps;
     
     /* Creating a public mapping that maps the UserID (a number) to a User. */
+      
     mapping (uint => User) public users;
 
     /* Creating a struct named User. 
@@ -74,30 +79,41 @@ contract Resume is Ownable {
         address userAddr;
     }
 
+    // ////////////////////////////////////////////////////////////// //
+
+
     // /////////////////////// INSTITUTIONS ////////////////////////// //
 
     /* keep a list of valid institutions */
+    
     mapping(address => bool) institutionList;
     
     /* Creating a public mapping that maps the institution address to the institution ID. */
+      
     mapping (address => uint) institutionIDMaps;
     
     /* Creating a public mapping that maps the InstitutionID (a number) to an Instituion. */
+      
     mapping (uint => Institution) public institutions;
 
     /* Creating an enum called institutionType for types of institutions */
+    
     enum institutionType {University, School, Certificator}
 
     /* Creating a struct named Institution. 
     Can expand more details about the Institution in the future- 
     address, year of inception, etc
     */
+    
     struct Institution {
         string name;
         uint date_joined;
         institutionType itype;
         address institutionAddr;
     }
+
+    // ////////////////////////////////////////////////////////////// //
+    
 
     // /////////////////////// RESUMES ////////////////////////// //
 
@@ -117,14 +133,19 @@ contract Resume is Ownable {
     /* Each resume and resume queue is an array of unique entryids that string 
     together resumes filled with entries
     */
+
     uint[] the_resume;
     uint[] resume_queue;
 
+    // ////////////////////////////////////////////////////////////// //
+
+    
     // /////////////////////// ENTRIES ////////////////////////// //
     
     /* Creating a mapping that maps the EntryID (a number) to an entry.
     Each resume is an array of entries
     */
+    
     mapping (uint => Entry) entries;
     
     /* Creating a struct named Entry. 
@@ -132,6 +153,7 @@ contract Resume is Ownable {
     1. receiving a degree from a University or School
     2. receiving a certification from a Certificator
     */
+    
     enum entryType {Degree, Certificate}
     
     /* struct of the entry containing info about the individual entry
@@ -146,6 +168,7 @@ contract Resume is Ownable {
     - start_date- when the degree or certificate is valid
     - end_date- when the degree or certificate is not valid
     - review- gives a review of the user- can be a recommendation, etc
+
     */
     struct Entry {
         address recipient;
@@ -161,15 +184,20 @@ contract Resume is Ownable {
     }
 
     // ////////////////////////////////////////////////////////////// //
+    
+
+    // ////////////////////////////////////////////////////////////// //
     // /////////////////////// END OF DECLARATIONS ////////////////////////// //
     // ////////////////////////////////////////////////////////////// //
     
-
+    
+    
     // ////////////////////////////////////////////////////////////// //
     // /////////////////////// EVENTS ////////////////////////// //
     // ////////////////////////////////////////////////////////////// //
 
-    /* Create events for the contract functions*/
+    /* Create events*/
+
     event AddedAdmin(address adminAddr);
     event SignUpFeeSet(uint fee);
     event SetPrice(uint price);
@@ -283,6 +311,7 @@ contract Resume is Ownable {
     /* A modifer that checks if the resume entry to view has been approved by the user */
     modifier verifyApproved (uint _UserID, uint _entryElement)
       {
+        
         require(entries[resumes[_UserID][_entryElement]].approved==true, "This entry has not been approved for viewing");
         _;
     }
@@ -387,7 +416,7 @@ contract Resume is Ownable {
     verifyUserEntry(_recipient)
     returns(bool)
     {
-        //Create the entry
+      //Create the entry
         bool _approved = false;
         uint _institutionID = institutionIDMaps[msg.sender];
         uint _date_received = now;
@@ -397,7 +426,7 @@ contract Resume is Ownable {
             etype: _etype, review: _review});
         emit EntryCreated(EntryCount);
 
-        //Add entry to the user's resume queue and map to user
+      //Add entry to the user's resume queue and map to user
         uint _UserID = userIDMaps[_recipient];
         resume_queues[_UserID].push(EntryCount);
         queueMaps[EntryCount] = _UserID;
@@ -446,7 +475,7 @@ contract Resume is Ownable {
         return true;
     }
 
-    /* This function let's users view the first item in their queue
+    /* This function let's user view the first item in their queue
     After viewing, the user should call the approveEntry function to approve or disapprove 
     and then this will remove the entry either adding it to their official resume or removing it 
     from the queue. This is the only way to view the next entry in their queue
@@ -596,4 +625,5 @@ contract Resume is Ownable {
     // ////////////////////////////////////////////////////////////// //
     // /////////////////////// END OF FUNCTIONS ////////////////////////// //
     // ////////////////////////////////////////////////////////////// //
+
 }
