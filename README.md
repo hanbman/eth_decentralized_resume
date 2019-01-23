@@ -123,7 +123,7 @@ To run truffle compile, migrate, and test, first go into the local folder where 
 
 *ganache-cli*
 
-This creates a development blockchain with 10 prefunded accounts so that testing can occur. 
+This creates a development blockchain with 10 prefunded accounts so that testing can occur. Default port is 8545 where the chain is running. This is also where truffle looks when running migration and tests.
 
 In the same directory, run the command:
 
@@ -140,6 +140,26 @@ This migrates our contract, it's dependencies, and other artifacts on the blockc
 *truffle test*
 
 Tests are written in javascript to test the functionality of the contract. This function shows the results from running tests on the ganache test chain.
+
+**Tests**
+
+The following tests are included in this package:
+
+1. Admin Sign Up- Owner of the contract should be able to sign up admins, and verify who is an admin.
+2. Institution Sign Up - Admins should be able to add institutions.
+3. User Sign Up - Owner should be able to set the sign up fee. User should be able to sign up.
+4. Add Entry - Institution should be able to add entry to user's queue. User should be able to view queue.
+5. Confirm Entry - Users should be able to confirm entries in their queue into their resume.
+6. View Resume - Outside parties should be able to view user's resume.
+
+**Libraries**
+
+Standard libraries were found in the [Consensys repo](https://github.com/ConsenSys/ethereum-developer-tools-list). The following libraries are included in this package:
+
+1. SafeMath - Allows numerical operations to be done safely preventing integer overflow, etc.
+2. Math - contains additional mathematical operations
+3. BokkyPooBahsDateTimeLibrary - helps with datetime processing such as converting between unix timestamp and human readable datetime
+4. Ownable - In addition, the resume contract inherits from the Ownable contract. Although not a library, ownable contains functionality to help deal with contract ownership and ownership mutability.
 
 **Frontend:**
 
