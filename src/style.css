@@ -1,0 +1,63 @@
+* {
+    margin: 0;
+    padding: 0;
+    transition: 0.1s;}
+
+body{
+    font-family: Helvetica, sans-serif;
+    color: white;
+    text-align: center;
+    background-image: url("https://cdn-images-1.medium.com/max/2400/1*fPLMYPKnq8mmmwBM3AGsAQ.png");
+    background-size: cover;
+}
+
+.header{
+    margin-top: 100px;
+    margin-bottom: 20px;
+    font-size: 40px;
+}
+
+.container{
+    padding-top: 30px;
+    text-align: center;
+}
+
+.container .button{
+    text-align: center;
+    font-size: 22px;
+    border: solid whitesmoke;
+    width: 400px;
+    border-radius: 8px; 
+    padding: 6px 12px;
+    display: inline-block;   
+}
+
+.container .expand{
+    display: none;
+    margin-top: 25px;
+    font-size: 25px;
+    text-align: center;
+}
+
+.container .expand #address{
+    width: 350px;
+    font-size: 20px;
+}
+
+.container .expand #username{
+    width: 350px;
+    font-size: 20px;
+}
+
+.container .expand #submit{
+    width: 100px;
+    height: 30x;
+    font-size: 20px;
+    background-color: cornflowerblue;
+    color: white;
+    border-radius: 10px;
+}
+
+.container #userThanks{
+    display: none;
+}

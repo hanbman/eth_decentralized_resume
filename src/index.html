@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Resume Chain</title>
+        <link href="style.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <div class="header">
+            <h1>Resume Chain</h1>
+        </div>
+       
+        <div class="container">
+            <div class="button" id="user">
+                <h2>USER</h2>
+        </div>
+        <div class="expand" id="userExpand">
+            <form action="submission.html" method="POST">
+                <label for ="address">Username</label>
+                <input type="text" name="Username" id="address">
+                <input type="submit" value="Sign Up" id="submit">
+                <h4 id="userThanks">Thanks for signing up!</h4>
+            </form>
+        </div>
+        
+        <div class="container">
+            <div class="button" id="admin">
+                <h2>ADMIN</h2>
+        </div>
+        <div class="expand" id="adminExpand">
+            <form action="submission.html" method="POST">
+                <label for ="address">Admin Address</label>
+                <input type="text" name="adminAddress" id="address">
+                <input type="submit" value="Sign Up" id="submit">
+            </form>
+            </div>
+
+        <div class="container">
+            <div class="button" id="institution">
+                <h2>INSTITUTION</h2>
+        </div>
+        <div class="expand" id="institutionExpand">
+            <form action="submission.html" method="POST">
+                <label for ="address">Institution Address</label>
+                <input type="text" name="institutionAddress" id="address">
+                <input type="submit" value="Sign Up" id="submit">
+            </form>
+        </div>
+
+        </div>
+
+        <script
+            src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script> 
+        <script src="script.js"></script>
+    </body>
+</html>
