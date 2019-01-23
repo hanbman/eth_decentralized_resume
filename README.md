@@ -4,7 +4,7 @@
 
 ##### Introduction
 
-There exists a challenge of keeping a verifiable, trustworthy record of an individual's past work and education history. With no central source of public record and an increasing number of unvetted institutions, there have been high profile cases of [public figures] (https://www.businessinsider.com/melissa-howard-florida-gop-candidate-drops-out-over-fake-degree-2018-8) who have attempted to fabricate their work and education history. This project takes advantage of the immutable record and decentralized verification attributes of the ethereum blockchain to create a platform for individuals to create and maintain a lasting record which can be shared with guaranteed veracity.
+There exists a challenge of keeping a verifiable, trustworthy record of an individual's past work and education history. With no central source of public record and an increasing number of unvetted institutions, there have been high profile cases of [public figures](https://www.businessinsider.com/melissa-howard-florida-gop-candidate-drops-out-over-fake-degree-2018-8) who have attempted to fabricate their work and education history. This project takes advantage of the immutable record and decentralized verification attributes of the ethereum blockchain to create a platform for individuals to create and maintain a lasting record which can be shared with guaranteed veracity.
 
 ##### Components
 
@@ -84,11 +84,11 @@ The Resume.sol contract holds the primary logic of the decentralized resume plat
 
 Make sure that these following packages are installed:
 
-1. [Truffle] (https://truffleframework.com/docs/truffle/getting-started/installation)
-2. [Ganache] (https://truffleframework.com/docs/ganache/quickstart)
-3. [NPM] (https://www.npmjs.com/get-npm)
-4. [Lite-Server] (https://www.npmjs.com/package/lite-server)
-5. [MetaMask] (https://metamask.io/)
+1. [Truffle](https://truffleframework.com/docs/truffle/getting-started/installation)
+2. [Ganache](https://truffleframework.com/docs/ganache/quickstart)
+3. [NPM](https://www.npmjs.com/get-npm)
+4. [Lite-Server](https://www.npmjs.com/package/lite-server)
+5. [MetaMask](https://metamask.io/)
 
 This project was developed in an ubuntu64 environment.
 
