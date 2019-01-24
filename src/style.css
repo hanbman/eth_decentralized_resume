@@ -50,14 +50,59 @@ body{
 }
 
 .container .expand #submit{
-    width: 100px;
-    height: 30x;
+    width: 120px;
+    height: 40x;
     font-size: 20px;
     background-color: cornflowerblue;
     color: white;
     border-radius: 10px;
+    display: inline;
+    padding: 5px 10px;
 }
 
-.container #userThanks{
+#thankyou{
     display: none;
+    margin-top: 100px;
+}
+
+#enter{
+    display:none;
+    margin-top: 20px;
+}
+
+#bottom{
+    margin-top: 100px;
+    display: none;
+}
+
+#bottom .box{
+    border: solid whitesmoke;
+    height: 150px;
+    width: 150px;
+    padding: 20px;
+    text-align: center;
+    margin-left: 40px;
+    margin-top: 350px;
+    display: inline-block;
+    vertical-align: middle
+}
+
+#resumeQueueInfo{
+    display: none;
+    margin-top: 30px;
+}
+
+#queueSizeInfo{
+    display: none;
+    margin-top: 30px;
+}
+
+#resumeSizeInfo{
+    display: none;
+    margin-top: 30px;
+}
+
+#approveInfo{
+    display: none;
+    margin-top: 30px;
 }
