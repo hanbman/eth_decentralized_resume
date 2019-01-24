@@ -54,7 +54,7 @@ App = {
   handleUserSignUp: function(event) {
     event.preventDefault();
 
-    var userName = document.getElementById('username').val()
+    var userName = document.getElementById('username').value;
     //var userName = parseString($(event.target).data('id'));
     var resumeInstance;
 
