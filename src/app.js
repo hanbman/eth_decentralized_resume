@@ -63,7 +63,7 @@ App = {
         console.log(error);
       }
 
-      var account = accounts[1];
+      var account = accounts[0];
 
       App.contracts.Resume.deployed().then(function(instance) {
         resumeInstance = instance;
