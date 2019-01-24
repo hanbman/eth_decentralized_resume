@@ -4,6 +4,7 @@ App = {
 
   init: function() {
     // Load the web3 javascript library to interact with Eth blockchain
+    alert("hello");
     return App.initWeb3();
   },
 
@@ -78,9 +79,7 @@ App = {
 };
 
 $(function() {
-  alert("hello");
   $(window).load(function() {
     App.init();
-    alert("hello");
   });
 });
