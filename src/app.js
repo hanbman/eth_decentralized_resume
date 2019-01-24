@@ -55,6 +55,7 @@ App = {
     event.preventDefault();
 
     var userName = document.getElementById('username').value;
+    console.log(userName);
     //var userName = parseString($(event.target).data('id'));
     var resumeInstance;
 
