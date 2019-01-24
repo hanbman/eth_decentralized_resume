@@ -78,7 +78,9 @@ App = {
 };
 
 $(function() {
+  alert("hello");
   $(window).load(function() {
     App.init();
+    alert("hello");
   });
 });
