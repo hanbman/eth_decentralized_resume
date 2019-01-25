@@ -1,5 +1,3 @@
-const HDWalletProvider = require('truffle-hdwallet-provider');
-
 module.exports = {
 //   compilers: {
 //     solc: '0.4.25'
