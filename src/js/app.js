@@ -133,7 +133,7 @@ App = {
     var instName = document.getElementById('name').value;
     var instAddr = document.getElementById('address').value;
     var instType = document.getElementsByName('type');
-    for (var i=0; length=instType.length; i<length; i++){
+    for (var i=0; i<instType.length; i++){
       if (instType[i].checked){
         instTypeValue = (instType[i].value);
         break;
