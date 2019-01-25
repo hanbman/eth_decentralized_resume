@@ -14,7 +14,7 @@ App = {
       App.web3Provider = web3.currentProvider;
     } else {
       // If no injected web3 instance is detected, fall back to Ganache
-      App.web3Provider = new Web3.providers.HttpProvider('http://localhost:8545');
+      App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
     }
     web3 = new Web3(App.web3Provider);
 
@@ -50,7 +50,7 @@ App = {
       // Get the necessary contract artifact file and instantiate it with truffle-contract
       var ResumeArtifact = data;
       // Truffle contract is redundant to web3, but allows you to absorb truffle build files
-      // with deployed addresses and ABIs that you  would have to set otherwise in Web3 - NJ
+      // with deployed addresses and ABIs that you would have to set otherwise in Web3 - NJ
       App.contracts.Resume = TruffleContract(ResumeArtifact);
 
       // Set the provider for our contract
@@ -66,8 +66,9 @@ App = {
   },
 
   handleUserSignUp: function(event) {
+    console.log(web3);
+    console.log(App);
     event.preventDefault();
-
     var userName = document.getElementById('username').value;
     console.log(userName);
     //var userName = parseString($(event.target).data('id'));
