@@ -63,8 +63,8 @@ App = {
       var resumeInstance;
       App.contracts.Resume.deployed().then(function(instance) {
         resumeInstance = instance;
+        contractOwner = resumeInstance.owner();
       })
-      contractOwner = resumeInstance.owner();
     });
 
     return App.bindEvents();
@@ -94,7 +94,7 @@ App = {
 
       App.contracts.Resume.deployed().then(function(instance) {
         resumeInstance = instance;
-
+        contractOwner = resumeInstance.owner();
         // Execute sign up as a transaction by sending userName from an account
         return resumeInstance.signUpUser(userName, {from: account});
       })
@@ -119,7 +119,7 @@ App = {
 
       App.contracts.Resume.deployed().then(function(instance) {
         resumeInstance = instance;
-
+        contractOwner = resumeInstance.owner();
         // Execute sign up as a transaction by sending adminAddr from the account only if the account is the owner
         return resumeInstance.addAdmin(adminAddr, {from: account});
       })
@@ -132,8 +132,10 @@ App = {
     event.preventDefault();
     var instName = document.getElementById('name').value;
     var instAddr = document.getElementById('address').value;
-    var instType = document.getElementById('username').value;
-    console.log(userName);
+    var instType = document.getElementByName('type').value;
+    console.log(instName);
+    console.log(instAddr);
+    console.log(instType);
     //var userName = parseString($(event.target).data('id'));
     var resumeInstance;
 
@@ -146,9 +148,9 @@ App = {
 
       App.contracts.Resume.deployed().then(function(instance) {
         resumeInstance = instance;
-
+        contractOwner = resumeInstance.owner();
         // Execute sign up as a transaction by sending account and userName
-        return resumeInstance.signUpUser(userName, {from: account});
+        return resumeInstance.addInstitution(instName, instAddr, instType, {from: account});
       })
     });
   }
