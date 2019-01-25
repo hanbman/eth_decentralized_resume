@@ -3,53 +3,86 @@
     padding: 0;
     transition: 0.1s;}
 
+header{
+    text-align: right;
+    margin-right: 40px;
+    margin-top: 5px;
+    font-size: 20px;
+}
+
 body{
     font-family: Helvetica, sans-serif;
     color: white;
     text-align: center;
     background-image: url("https://cdn-images-1.medium.com/max/2400/1*fPLMYPKnq8mmmwBM3AGsAQ.png");
     background-size: cover;
+    overflow: scroll;
 }
 
 .header{
-    margin-top: 100px;
+    margin-top: 80px;
     margin-bottom: 20px;
     font-size: 40px;
 }
 
-.container{
+.menu{
     padding-top: 30px;
     text-align: center;
 }
 
-.container .button{
+.menu .button{
     text-align: center;
     font-size: 22px;
     border: solid whitesmoke;
     width: 400px;
     border-radius: 8px; 
     padding: 6px 12px;
-    display: inline-block;   
+    display: inline-block; 
 }
 
-.container .expand{
+.menu .expand{
     display: none;
     margin-top: 25px;
     font-size: 25px;
     text-align: center;
 }
 
-.container .expand #address{
+.menu .expand #address{
     width: 350px;
     font-size: 20px;
 }
 
-.container .expand #username{
+.menu .expand #adminAddress{
     width: 350px;
     font-size: 20px;
 }
 
-.container .expand #submit{
+.menu .expand #name{
+    width: 325px;
+    font-size: 20px;
+}
+
+.menu .expand #type{
+    width: 350px;
+    font-size: 20px;
+}
+
+.menu .expand #username{
+    width: 350px;
+    font-size: 20px;
+}
+
+.radio-button{
+    display: inline;
+    font-size: 22px;
+    margin-top: 2px;
+}
+
+.radio-button #type{
+    margin-right: 80px;
+}
+
+.menu .expand .signup{
     width: 120px;
     height: 40x;
     font-size: 20px;
@@ -68,6 +101,13 @@ body{
 #enter{
     display:none;
     margin-top: 20px;
+    font-size: 30px;
+    text-decoration: none;
+    color: mediumturquoise;
+}
+
+a{
+    color: mediumturquoise;
 }
 
 #bottom{
@@ -89,20 +129,20 @@ body{
 
 #resumeQueueInfo{
     display: none;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 #queueSizeInfo{
     display: none;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 #resumeSizeInfo{
     display: none;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 #approveInfo{
     display: none;
-    margin-top: 30px;
+    margin-top: 20px;
 }

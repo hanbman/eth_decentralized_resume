@@ -3,6 +3,9 @@ App = {
   contracts: {},
 
   init: function() {
+    // Set global contract owner
+    var contractOwner;
+
     // Load the web3 javascript library to interact with Eth blockchain
     // alert("hello");
     return App.initWeb3();
@@ -55,6 +58,13 @@ App = {
 
       // Set the provider for our contract
       App.contracts.Resume.setProvider(App.web3Provider);
+      
+      // Set the owner of the contract
+      var resumeInstance;
+      App.contracts.Resume.deployed().then(function(instance) {
+        resumeInstance = instance;
+      })
+      contractOwner = resumeInstance.owner();
     });
 
     return App.bindEvents();
@@ -62,13 +72,67 @@ App = {
 
   bindEvents: function() {
     $(document).on('click', '#submit', App.handleUserSignUp);
+    $(document).on('click', '#adminSubmit', App.handleAdminSignUp);
+    $(document).on('click', '#institutionSubmit', App.handleInstitutionSignUp);
   },
 
   handleUserSignUp: function(event) {
-    console.log(web3);
-    console.log(App);
+    //console.log(web3);
+    //console.log(App);
     event.preventDefault();
     var userName = document.getElementById('username').value;
+    console.log(userName);
+    //var userName = parseString($(event.target).data('id'));
+    var resumeInstance;
+
+    web3.eth.getAccounts(function(error, accounts) {
+      if (error) {
+        console.log(error);
+      }
+
+      var account = accounts[0];
+
+      App.contracts.Resume.deployed().then(function(instance) {
+        resumeInstance = instance;
+
+        // Execute sign up as a transaction by sending userName from an account
+        return resumeInstance.signUpUser(userName, {from: account});
+      })
+    });
+  },
+
+  handleAdminSignUp: function(event) {
+    //console.log(web3);
+    //console.log(App);
+    event.preventDefault();
+    var adminAddr = document.getElementById('adminAddress').value;
+    console.log(adminAddr);
+    //var userName = parseString($(event.target).data('id'));
+    var resumeInstance;
+
+    web3.eth.getAccounts(function(error, accounts) {
+      if (error) {
+        console.log(error);
+      }
+
+      var account = accounts[0];
+
+      App.contracts.Resume.deployed().then(function(instance) {
+        resumeInstance = instance;
+
+        // Execute sign up as a transaction by sending adminAddr from the account only if the account is the owner
+        return resumeInstance.addAdmin(adminAddr, {from: account});
+      })
+    });
+  },
+
+  handleInstitutionSignUp: function(event) {
+    //console.log(web3);
+    //console.log(App);
+    event.preventDefault();
+    var instName = document.getElementById('name').value;
+    var instAddr = document.getElementById('address').value;
+    var instType = document.getElementById('username').value;
     console.log(userName);
     //var userName = parseString($(event.target).data('id'));
     var resumeInstance;

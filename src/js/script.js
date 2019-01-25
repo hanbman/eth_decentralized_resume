@@ -14,13 +14,25 @@ $(document).ready(() =>{
 
     $('#submit').on('click', () =>{
         $('.expand').hide();
+        $('#thankyou').show()
+        $('#enter').show();
+    });
+
+    $('#adminSubmit').on('click', () =>{
+        $('.expand').hide();
+        $('#thankyou').show();
+        $('#enter').show();
+    });
+
+    $('#institutionSubmit').on('click', () =>{
+        $('.expand').hide();
         $('#thankyou').show();
         $('#enter').show();
     });
     
     $('#enter').on('click', () =>{
         $('#bottom').show();
-        $('.container').hide();
+        $('.menu').hide();
         $('#thankyou').hide();
         $('#enter').hide();
         $('.header').hide();
