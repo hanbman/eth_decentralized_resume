@@ -132,7 +132,7 @@ App = {
     event.preventDefault();
     var instName = document.getElementById('name').value;
     var instAddr = document.getElementById('address').value;
-    var instType = document.getElementByName('type').value;
+    var instType = document.getElementsByName('type').value;
     console.log(instName);
     console.log(instAddr);
     console.log(instType);
