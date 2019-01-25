@@ -132,10 +132,17 @@ App = {
     event.preventDefault();
     var instName = document.getElementById('name').value;
     var instAddr = document.getElementById('address').value;
-    var instType = document.getElementsByName('type').value;
+    var instType = document.getElementsByName('type');
+    for (var i=0; length=instType.length; i<length; i++){
+      if (instType[i].checked){
+        instTypeValue = (instType[i].value);
+        break;
+      }
+    }
+
     console.log(instName);
     console.log(instAddr);
-    console.log(instType);
+    console.log(instTypeValue);
     //var userName = parseString($(event.target).data('id'));
     var resumeInstance;
 
@@ -150,7 +157,7 @@ App = {
         resumeInstance = instance;
         contractOwner = resumeInstance.owner();
         // Execute sign up as a transaction by sending account and userName
-        return resumeInstance.addInstitution(instName, instAddr, instType, {from: account});
+        return resumeInstance.addInstitution(instName, instAddr, instTypeValue, {from: account});
       })
     });
   }
