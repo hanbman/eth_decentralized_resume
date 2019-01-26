@@ -66,7 +66,7 @@ App = {
         contractOwner = resumeInstance.owner();
         console.log(contractOwner);
         var displayOwner = document.createElement('p');
-        displayOwner.innerHTML = contractOwner.value();
+        displayOwner.innerHTML = contractOwner.value;
         document.body.appendChild(displayOwner);
       })
     });
