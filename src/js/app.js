@@ -64,6 +64,9 @@ App = {
       App.contracts.Resume.deployed().then(function(instance) {
         resumeInstance = instance;
         contractOwner = resumeInstance.owner();
+        var displayOwner = document.createElement('p');
+        displayOwner.innerHTML = contractOwner;
+        document.body.appendChild(displayOwner);
       })
     });
 
