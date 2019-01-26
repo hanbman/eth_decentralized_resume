@@ -41,6 +41,9 @@ contract Resume is Ownable {
     
     /* set owner */
     address public _owner;
+    
+    // build in the Circuit Breaker / Pause Contract Functionality
+    bool private emergency_stop;
 
     /* keep track of the users, institutions, and entries */
     uint private UserCount;
@@ -200,6 +203,7 @@ contract Resume is Ownable {
     /* Create events*/
 
     event AddedAdmin(address adminAddr);
+    event CircuitBreak(bool emergency_stopped);
     event SignUpFeeSet(uint fee);
     event SetPrice(uint price);
     event AddedInstitution(uint UniversityID);
@@ -225,6 +229,12 @@ contract Resume is Ownable {
     /* This check to see if caller is the owner. Inherited from ownable contract*/
     modifier onlyOwner() {
         require(isOwner(), "This action is prohibited for non Owner.");
+        _;
+    }
+
+     /* This checks if the contract is still active or if there has been an emergency stop*/
+    modifier contractActive() {
+        require(emergency_stop==false, "Contract is no longer active. Please contact owner.");
         _;
     }
 
@@ -349,6 +359,7 @@ contract Resume is Ownable {
       /* Set the owner as the person who instantiated the contract
       Set the counts of Users, Institions, and Entries to 0. */
         _owner = msg.sender;
+        emergency_stop = false;
         admins[_owner] = true;
         UserCount = 1;
         InstitutionCount = 1;
@@ -359,6 +370,7 @@ contract Resume is Ownable {
     /* This function lets the owner of the contract add admins to manage the contract */
     function addAdmin(address admin)
     public
+    contractActive()
     onlyOwner()
     returns(bool)
     {
@@ -366,10 +378,23 @@ contract Resume is Ownable {
         emit AddedAdmin(admin);
         return true;
     }
+
+     /* This function lets the owner of the contract change the contract state from 
+     active to non-active and vice versa */
+    function circuitBreakContract(bool _emergency_stop)
+    public
+    onlyOwner()
+    returns(bool)
+    {
+        emergency_stop = _emergency_stop;
+        emit CircuitBreak(_emergency_stop);
+        return true;
+    }
     
     /* This function lets the owner of the contract set the sign up fee for new users */
     function setSignUpFee(uint _fee)
     public
+    contractActive()
     onlyOwner()
     returns(bool)
     {
@@ -382,6 +407,7 @@ contract Resume is Ownable {
     function signUpUser(string memory _name)
     public
     payable
+    contractActive()
     paidEnough ()
     checkValue ()
     returns(bool)
@@ -398,6 +424,7 @@ contract Resume is Ownable {
     entries for users on the platform*/
     function addInstitution(string memory _name, address _institutionAddr, institutionType _itype) 
     public
+    contractActive()
     verifyAdmin()
     returns(bool)
     {
@@ -413,6 +440,7 @@ contract Resume is Ownable {
     function addEntry(address _recipient, string memory _entry_title, string memory _degree_descr, 
         uint _start_date, uint _end_date, entryType _etype, string memory _review) 
     public
+    contractActive()
     verifyInstitution()
     verifyUserEntry(_recipient)
     returns(bool)
@@ -447,6 +475,7 @@ contract Resume is Ownable {
     */
     function approveEntry(uint _entryID, bool _doYouWantToApprove)
     public
+    contractActive()
     verifyUserApproval(queueMaps[_entryID])
     verifyQueueEmpty(msg.sender)
     verifyNextEntryUp (_entryID)
@@ -485,6 +514,7 @@ contract Resume is Ownable {
     function showMyResumeQueue()
       public 
       view
+      contractActive()
       verifyUser()
       verifyQueueEmpty(msg.sender)
       returns (uint entryID, string memory entry_title, string memory degree_descr,
@@ -520,6 +550,7 @@ contract Resume is Ownable {
     function viewResume(uint _UserID, uint _entryElement)
       public 
       view
+      contractActive()
       verifyViewUserResume (_UserID)
       verifyResumeEmpty (_UserID)
       verifyResumeEntryExists (_UserID, _entryElement)
@@ -560,6 +591,7 @@ contract Resume is Ownable {
     function checkQueueSize()
       public
       view 
+      contractActive()
       verifyUser()
       verifyQueueEmpty(msg.sender)
       returns (uint _queueSize)
@@ -574,6 +606,7 @@ contract Resume is Ownable {
     function checkResumeSize(uint _UserID)
       public
       view 
+      contractActive()
       verifyViewUserResume (_UserID)
       verifyResumeEmpty (_UserID)
       returns (uint _resumeSize)
@@ -587,6 +620,7 @@ contract Resume is Ownable {
     function isAdmin(address _adminAddr)
       public
       view 
+      contractActive()
       onlyOwner()
       returns (bool) 
     {
@@ -598,6 +632,7 @@ contract Resume is Ownable {
     function checkUserID()
       public
       view 
+      contractActive()
       verifyUser()
       returns (uint _UserID)
     {
@@ -610,6 +645,7 @@ contract Resume is Ownable {
     function checkSignUpDate()
       public
       view 
+      contractActive()
       verifyUser()
       returns (uint _year, uint _month, uint _day)
     {
@@ -628,6 +664,7 @@ contract Resume is Ownable {
     function showOwner()
       public
       view 
+      contractActive()
       returns (address)
     {
         return (_owner);
