@@ -87,11 +87,8 @@ App = {
     });
   },*/
 
-
-
-
-
     return App.bindEvents();
+    })
   },
 
   bindEvents: function() {
