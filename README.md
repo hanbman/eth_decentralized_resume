@@ -1,4 +1,4 @@
-# RESUME CHAIN
+# Résumé Chain
 
 ### Ethereum Decentralized Resume
 
