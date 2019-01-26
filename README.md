@@ -1,6 +1,6 @@
 # Résumé Chain
 
-### Ethereum Decentralized Resume
+### Ethereum Decentralized Resume DApp
 
 ##### Introduction
 
