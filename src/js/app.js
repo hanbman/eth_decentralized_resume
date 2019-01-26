@@ -63,7 +63,7 @@ App = {
       var resumeInstance;
       App.contracts.Resume.deployed().then(function(instance) {
         resumeInstance = instance;
-        return resumeInstance.showOwner.call();
+        return resumeInstance.showOwner().call();
       }).then(function(contractOwner){
         console.log(contractOwner);
         var displayOwner = document.createElement('p');
