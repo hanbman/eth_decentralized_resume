@@ -40,7 +40,7 @@ contract Resume is Ownable {
 
     
     /* set owner */
-    address private _owner;
+    address public _owner;
 
     /* keep track of the users, institutions, and entries */
     uint private UserCount;
@@ -628,7 +628,7 @@ contract Resume is Ownable {
     function showOwner()
       public
       view 
-      returns (address)
+      returns (address _owner)
     {
         return (_owner);
     }
