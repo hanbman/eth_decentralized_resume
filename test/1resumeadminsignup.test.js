@@ -1,3 +1,6 @@
+//Test #1- This test verifies that Owner of the contract should be able to sign up admins, 
+//and verify who is an admin
+
 var Resume = artifacts.require('Resume')
 
 contract('Resume', function(accounts) {

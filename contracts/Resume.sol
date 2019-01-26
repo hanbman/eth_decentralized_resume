@@ -1,44 +1,34 @@
+/**
+ * @file
+ * @author Han Man <hanbman@gmail.com>
+ * @version 1.0
+ */
+
 pragma solidity ^0.5.0;
 
+/** @dev The following libraries were found here https://github.com/ConsenSys/ethereum-developer-tools-list
+*/
 import "./Ownable.sol";
 import "./BokkyPooBahsDateTimeLibrary.sol";
 import "./SafeMath.sol";
 
+/** @title Resume. */
 contract Resume is Ownable {
 
-    // The following libraries were found here https://github.com/ConsenSys/ethereum-developer-tools-list
     // Specify that this contract uses SafeMath library for operations involving uint
     using SafeMath for uint;
   
     // Specify that this contract uses BokkyPooBahsDateTimeLibrary for operations involving uint
     using BokkyPooBahsDateTimeLibrary for uint;
   
-    // ////////////////////////////////////////////////////////////// //
     // /////////////////////// DECLARATIONS ////////////////////////// //
-    // ////////////////////////////////////////////////////////////// //
-    
-
-    // no underscores between words
-    // lower case starting and then upper case for first variables unless they are structs
-    /// use triple slash for functions
-    // no long comments
-
-    //design choices
-    //public and private variables
-    //view functions
-    //payable or not payable
-    // why use only one entry returned for queue, and why do I need to shift the list so lists dont grow out of control
-    // looping is just to keep the order of the array
-
-
-    //loops- 
+   
+    // future 
     // loops happen in javascript- individual transactions
     // batch sizes
     // good to do for future- link lists- send you link
     // pass in the queue element of current entry and delete the first entry
 
-
-    
     /* set owner */
     address public _owner;
     
@@ -51,73 +41,56 @@ contract Resume is Ownable {
     uint private EntryCount;
 
     /* keep a list of Admins that can add universities, users, entries */
-    
     mapping(address => bool) private admins;
 
     // ///////////////////////     USERS    ////////////////////////// //
 
     /* when users sign up to be on the platform, they have to pay a set fee */
-    
     uint public user_signup_fee;
     
     /* keep a list of valid users */
-    
     mapping(address => bool) userList;
     
     /* Creating a public mapping that maps the user address to the user ID. */
-      
     mapping (address => uint) userIDMaps;
     
     /* Creating a public mapping that maps the UserID (a number) to a User. */
-      
     mapping (uint => User) public users;
 
     /* Creating a struct named User. 
     Can expand more details about the User in the future- 
     address, age, etc
     */
-    
     struct User {
         string name;
         uint date_joined;
         address userAddr;
     }
 
-    // ////////////////////////////////////////////////////////////// //
-
-
     // /////////////////////// INSTITUTIONS ////////////////////////// //
 
     /* keep a list of valid institutions */
-    
     mapping(address => bool) institutionList;
     
     /* Creating a public mapping that maps the institution address to the institution ID. */
-      
     mapping (address => uint) institutionIDMaps;
     
     /* Creating a public mapping that maps the InstitutionID (a number) to an Instituion. */
-      
     mapping (uint => Institution) public institutions;
 
     /* Creating an enum called institutionType for types of institutions */
-    
     enum institutionType {University, School, Certificator}
 
     /* Creating a struct named Institution. 
     Can expand more details about the Institution in the future- 
     address, year of inception, etc
     */
-    
     struct Institution {
         string name;
         uint date_joined;
         institutionType itype;
         address institutionAddr;
     }
-
-    // ////////////////////////////////////////////////////////////// //
-    
 
     // /////////////////////// RESUMES ////////////////////////// //
 
@@ -126,7 +99,6 @@ contract Resume is Ownable {
     There is also a resume_queue for each user of entries that have yet to
     be approved by the user. 
     */
-      
     mapping (uint => uint[]) public resumes;
     mapping (uint => uint[]) public resume_queues;
     
@@ -137,19 +109,14 @@ contract Resume is Ownable {
     /* Each resume and resume queue is an array of unique entryids that string 
     together resumes filled with entries
     */
-
     uint[] the_resume;
     uint[] resume_queue;
 
-    // ////////////////////////////////////////////////////////////// //
-
-    
     // /////////////////////// ENTRIES ////////////////////////// //
     
     /* Creating a mapping that maps the EntryID (a number) to an entry.
     Each resume is an array of entries
     */
-    
     mapping (uint => Entry) entries;
     
     /* Creating a struct named Entry. 
@@ -157,7 +124,6 @@ contract Resume is Ownable {
     1. receiving a degree from a University or School
     2. receiving a certification from a Certificator
     */
-    
     enum entryType {Degree, Certificate}
     
     /* struct of the entry containing info about the individual entry
@@ -172,7 +138,6 @@ contract Resume is Ownable {
     - start_date- when the degree or certificate is valid
     - end_date- when the degree or certificate is not valid
     - review- gives a review of the user- can be a recommendation, etc
-
     */
     struct Entry {
         address recipient;
@@ -187,21 +152,9 @@ contract Resume is Ownable {
         string review;
     }
 
-    // ////////////////////////////////////////////////////////////// //
-    
-
-    // ////////////////////////////////////////////////////////////// //
-    // /////////////////////// END OF DECLARATIONS ////////////////////////// //
-    // ////////////////////////////////////////////////////////////// //
-    
-    
-    
-    // ////////////////////////////////////////////////////////////// //
     // /////////////////////// EVENTS ////////////////////////// //
-    // ////////////////////////////////////////////////////////////// //
-
+ 
     /* Create events*/
-
     event AddedAdmin(address adminAddr);
     event CircuitBreak(bool emergency_stopped);
     event SignUpFeeSet(uint fee);
@@ -213,14 +166,7 @@ contract Resume is Ownable {
     event AddedtoResume(uint EntryID, uint UserID);
     event EntryRejected(uint EntryID, uint UserID);
 
-    // ////////////////////////////////////////////////////////////// //
-    // /////////////////////// END OF EVENTS ////////////////////////// //
-    // ////////////////////////////////////////////////////////////// //
-
-
-    // ////////////////////////////////////////////////////////////// //
     // /////////////////////// MODIFIERS ////////////////////////// //
-    // ////////////////////////////////////////////////////////////// //
 
       // Do not forget the "_;"! It will
       // be replaced by the actual function
@@ -264,19 +210,21 @@ contract Resume is Ownable {
         _;
     }
 
-      /* A modifer that checks if the userID that you are trying to view exists */
+    /* A modifer that checks if the userID that you are trying to view exists */
     modifier verifyViewUserResume (uint _UserID) 
       { 
         require (userList[users[_UserID].userAddr]==true, "This ID is not a valid user.");
         _;
     }
 
+    /* A modifer that checks if the user has paid enough to sign up */
     modifier paidEnough()
       { 
         require(msg.value >= user_signup_fee, "Not paid enough to sign up as a user."); 
         _;
     }
-      
+    
+    /* A modifer that checks if the user has paid too much and then refunds */
     modifier checkValue() 
       {
       //refund them after pay for item (why it is before, _ checks for logic before func)
@@ -287,7 +235,6 @@ contract Resume is Ownable {
             msg.sender.transfer(amountToRefund);
     }
 
-    
     /* A modifer that checks if the address given is a valid user */
     modifier verifyUserEntry (address _address) 
       { 
@@ -342,16 +289,9 @@ contract Resume is Ownable {
         _;
     }
 
-    // ////////////////////////////////////////////////////////////// //
-    // /////////////////////// END OF MODIFIERS ////////////////////////// //
-    // ////////////////////////////////////////////////////////////// //
-
-
-    // ////////////////////////////////////////////////////////////// //
     // /////////////////////// FUNCTIONS ////////////////////////// //
-    // ////////////////////////////////////////////////////////////// //
 
-    /* This is the constructor
+    /** @dev This is the constructor
     We are setting the owner to the one who starts this contract
     Sets the owner as the first admin
     UserCount, InstitutionCount, and EntryCount set to 1 since we start IDs at 1 */
@@ -367,7 +307,10 @@ contract Resume is Ownable {
         user_signup_fee = 0;
     }
 
-    /* This function lets the owner of the contract add admins to manage the contract */
+    /** @dev This function lets the owner of the contract add admins to manage the contract 
+    @param admin is the address of the admin to add
+    @return true
+    */
     function addAdmin(address admin)
     public
     contractActive()
@@ -379,8 +322,11 @@ contract Resume is Ownable {
         return true;
     }
 
-     /* This function lets the owner of the contract change the contract state from 
-     active to non-active and vice versa */
+    /** @dev This function lets the owner of the contract change the contract state from 
+     active to non-active and vice versa 
+    @param _emergency_stop is a bool that specifies whether it is an emergency
+    @return true
+    */
     function circuitBreakContract(bool _emergency_stop)
     public
     onlyOwner()
@@ -391,7 +337,10 @@ contract Resume is Ownable {
         return true;
     }
     
-    /* This function lets the owner of the contract set the sign up fee for new users */
+    /** @dev This function lets the owner of the contract set the sign up fee for new users
+    @param _fee is a value for the fee to set
+    @return true
+    */
     function setSignUpFee(uint _fee)
     public
     contractActive()
@@ -403,7 +352,10 @@ contract Resume is Ownable {
         return true;
     }
     
-    /* This function let's users sign up for this service to record their resumes */
+    /** @dev This function let's users sign up for this service to record their resumes
+    @param _name is a value for name of the user to enter
+    @return true
+    */
     function signUpUser(string memory _name)
     public
     payable
@@ -420,8 +372,13 @@ contract Resume is Ownable {
         return true;
     }
 
-    /* This function let's admins add institutions that are legitimate, allowing them submit
-    entries for users on the platform*/
+     /** @dev This function let's admins add institutions that are legitimate, allowing them submit
+    entries for users on the platform
+    @param _name characteristics of the institution
+    @param _institutionAddr characteristics of the institution
+    @param _itype characteristics of the institution
+    @return true
+    */
     function addInstitution(string memory _name, address _institutionAddr, institutionType _itype) 
     public
     contractActive()
@@ -436,7 +393,16 @@ contract Resume is Ownable {
         return true;
     }
 
-    /* This function let's institutions add entries that can go on the resumes of users*/
+    /** @dev This function let's institutions add entries that can go on the resumes of users
+    @param _recipient characteristics of the entry
+    @param _entry_title characteristics of the entry
+    @param _degree_descr characteristics of the entry
+    @param _start_date characteristics of the entry
+    @param _end_date characteristics of the entry
+    @param _etype characteristics of the entry
+    @param _review characteristics of the entry
+    @return true
+    */
     function addEntry(address _recipient, string memory _entry_title, string memory _degree_descr, 
         uint _start_date, uint _end_date, entryType _etype, string memory _review) 
     public
@@ -445,7 +411,7 @@ contract Resume is Ownable {
     verifyUserEntry(_recipient)
     returns(bool)
     {
-      //Create the entry
+        //Create the entry
         bool _approved = false;
         uint _institutionID = institutionIDMaps[msg.sender];
         uint _date_received = now;
@@ -455,7 +421,7 @@ contract Resume is Ownable {
             etype: _etype, review: _review});
         emit EntryCreated(EntryCount);
 
-      //Add entry to the user's resume queue and map to user
+        //Add entry to the user's resume queue and map to user
         uint _UserID = userIDMaps[_recipient];
         resume_queues[_UserID].push(EntryCount);
         queueMaps[EntryCount] = _UserID;
@@ -466,12 +432,15 @@ contract Resume is Ownable {
         return true;
     }
 
-    /* This function let's users approve entries in their resume queue
+    /** @dev This function let's users approve entries in their resume queue
     Once the entry is approved, it moves from resume queue to the offical resume
     If it rejected, then we just remove it from the queue.
     This requires user to enter in the that the entry they are trying to edit
     is the next entry up in their queue so they are aware which one they are approving
     or rejecting.
+    @param _entryID universal entry ID of the entry to approve or reject 
+    @param _doYouWantToApprove choie of user to approve or reject 
+    @return true
     */
     function approveEntry(uint _entryID, bool _doYouWantToApprove)
     public
@@ -505,11 +474,12 @@ contract Resume is Ownable {
         return true;
     }
 
-    /* This function let's user view the first item in their queue
+    /** @dev This function let's user view the first item in their queue
     After viewing, the user should call the approveEntry function to approve or disapprove 
     and then this will remove the entry either adding it to their official resume or removing it 
     from the queue. This is the only way to view the next entry in their queue
-    No ability to return arrays yet in solidity???
+    No ability to return arrays yet in solidity??? 
+    @return the first entry in the resume queue for the user who calls the function
     */
     function showMyResumeQueue()
       public 
@@ -534,7 +504,8 @@ contract Resume is Ownable {
         start_date, end_date, review);
       }
 
-    /* This function let's an external party view a user's offical resume
+    
+    /** @dev This function let's an external party view a user's offical resume
     This allows:
     1. A user to view their own resume
     2. A third party such as a company performing a background check to validate a resume
@@ -546,6 +517,9 @@ contract Resume is Ownable {
     oldest entry added to a resume, while element resume.length-1 will be the newest entry. 
     It is useful to run the checkResumeSize function first to see how big the resume is 
     to choose which element to view.
+    @param _UserID is the user ID of whom you want to view the resume. Note this is the ID not the user address
+    @param _entryElement the element of the entry queue to view NOT to be confused for the entry ID. For example, element 0 is the first in the queue
+    @return the entry in the resume queue for the specified user at the specified entry element
     */
     function viewResume(uint _UserID, uint _entryElement)
       public 
@@ -585,8 +559,9 @@ contract Resume is Ownable {
         );
     }
 
-    /* This function let's a user check the size of their own queue so they know 
+    /** @dev This function let's a user check the size of their own queue so they know 
     if they need to clear entries in their queue
+    @return the queue size of the user calling the function
     */
     function checkQueueSize()
       public
@@ -599,9 +574,11 @@ contract Resume is Ownable {
         return (resume_queues[userIDMaps[msg.sender]].length);
     }
 
-    /* This function let's someone check the size of the resume of a user
+    /** @dev This function let's someone check the size of the resume of a user
     to see how many entries to look through to view entire resume of the user
     This function should be used before using viewResume function
+    @param _UserID is the ID for the user whose resume size you want to check
+    @return the size of the length of the resume for the user ID provided
     */
     function checkResumeSize(uint _UserID)
       public
@@ -614,8 +591,9 @@ contract Resume is Ownable {
         return (resumes[_UserID].length);
     }  
     
-    
-    /* This function let's the owner check who is an admin
+    /** @dev This function let's the owner check who is an admin
+    @param _adminAddr is the ID for the admin that the owner wants to check
+    @return true of false
     */
     function isAdmin(address _adminAddr)
       public
@@ -627,7 +605,8 @@ contract Resume is Ownable {
         return (admins[_adminAddr]);
     }
 
-    /* This function let's a user check their own userID
+     /** @dev This function let's a user check their own userID
+    @return userID of the user calling the function to check checking
     */
     function checkUserID()
       public
@@ -639,8 +618,9 @@ contract Resume is Ownable {
         return (userIDMaps[msg.sender]);
     } 
       
-    /* This function let's a user check when they signed up
+    /** @dev This function let's a user check when they signed up
     This uses an imported date time library
+    @return date of when the user signed up for the user making the call
     */
     function checkSignUpDate()
       public
@@ -659,7 +639,8 @@ contract Resume is Ownable {
       , _day);
     }
 
-    /* This function displays owner
+       /** @dev This function displays owner
+    @return address of the owner of the contract
     */
     function showOwner()
       public
@@ -669,9 +650,5 @@ contract Resume is Ownable {
     {
         return (_owner);
     }
-
-    // ////////////////////////////////////////////////////////////// //
-    // /////////////////////// END OF FUNCTIONS ////////////////////////// //
-    // ////////////////////////////////////////////////////////////// //
 
 }

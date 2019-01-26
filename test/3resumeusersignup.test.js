@@ -1,3 +1,6 @@
+//Test #3- This test verifies that Owner can change and set the sign up fee
+//Then a user can sign up if they pay the correct fee and if they pay extra they are refunded
+
 var Resume = artifacts.require('Resume')
 
 contract('Resume', function(accounts) {

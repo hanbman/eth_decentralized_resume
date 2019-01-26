@@ -1,3 +1,5 @@
+//Test #5- This test verifies that the user can confirm or reject the entries in their queue
+
 var Resume = artifacts.require('Resume')
 
 contract('Resume', function(accounts) {

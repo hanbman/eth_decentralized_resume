@@ -1,3 +1,7 @@
+//Test #4- This test verifies that Institutions can add entries to a user's queue
+//And the user can view their queue and the next item up for approval
+
+
 var Resume = artifacts.require('Resume')
 
 contract('Resume', function(accounts) {

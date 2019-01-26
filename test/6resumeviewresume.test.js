@@ -1,3 +1,6 @@
+//Test #6- This test verifies that third parties can view a resume entry from
+//a specified user and their entry element
+
 var Resume = artifacts.require('Resume')
 
 contract('Resume', function(accounts) {

@@ -1,3 +1,5 @@
+//Test #2- This test verifies that once added, admins can add institutions to the platform
+
 var Resume = artifacts.require('Resume')
 
 contract('Resume', function(accounts) {
