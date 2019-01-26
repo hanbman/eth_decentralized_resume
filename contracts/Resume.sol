@@ -623,6 +623,16 @@ contract Resume is Ownable {
       , _day);
     }
 
+    /* This function displays owner
+    */
+    function showOwner()
+      public
+      view 
+      returns (address)
+    {
+        return (_owner);
+    }
+
     // ////////////////////////////////////////////////////////////// //
     // /////////////////////// END OF FUNCTIONS ////////////////////////// //
     // ////////////////////////////////////////////////////////////// //
