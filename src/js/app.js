@@ -66,10 +66,9 @@ App = {
         return resumeInstance.showOwner.call();
       }).then(function(contractOwner){
         console.log(contractOwner);
-        
-        /*var displayOwner = document.createElement('p');
+        var displayOwner = document.createElement('p');
         displayOwner.innerHTML = contractOwner;
-        document.body.appendChild(displayOwner);*/
+        document.body.appendChild(displayOwner);
       });
 
     /*App.contracts.Adoption.deployed().then(function(instance) {
