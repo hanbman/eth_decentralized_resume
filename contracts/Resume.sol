@@ -628,7 +628,7 @@ contract Resume is Ownable {
     function showOwner()
       public
       view 
-      returns (address _owner)
+      returns (address)
     {
         return (_owner);
     }
