@@ -99,6 +99,32 @@ The Resume.sol contract holds the primary logic of the decentralized resume plat
 
 ###### Required installations to run and test the contract
 
+Setting up the Environment:
+
+The DApp was developed using these environment specifications:
+
+- Ubuntu 18.04.1 LTS
+- npm 3.5.2
+- node.js 8.10.0
+- lite-server 2.4.0
+- truffle 5.0.1
+- solidity 0.5.0
+- Ganache-CLI 6.2.3
+
+To make sure that there are no issues with dependencies, we recommend that you run everything from a virtual machine. These are the instructions on how to set up VirtualBox on your machine to install Ubuntu.
+
+*Oracle VM VirtualBox*
+
+VirtualBox is a general-purpose full virtualizer for x86 hardware, targeted at server, desktop and embedded use. It allows us to create a virtual desktop environment on existing hardware. This enables us to run the same software even if we are running different operating systems, which helps reduce problems associated with different development environments.
+
+Many of the tools we are using throughout the course are under active development and encountering bugs is a common occurrence. Additionally, different versions of the tools we will be using (Windows vs Mac vs Linux) may show different errors and complicate the learning process. To avoid these problems, we encourage everyone to use VirtualBox running the latest version of Ubuntu. Ubuntu is a free open source distribution of the Linux operating system.  
+
+Please download [VirtualBox for your machine here](https://www.virtualbox.org/wiki/Downloads).
+
+You can download the [latest version of Ubuntu Desktop here]("https://www.ubuntu.com/download/desktop").
+
+There is a good tutorial on [how to install Ubuntu on VirtualBox here]("https://askubuntu.com/questions/142549/how-to-install-ubuntu-on-virtualbox"). A VM with 4GB RAM and 10GB of storage should be sufficient for the purposes of this course. Also, setting up a shared folder between the virtual machine and your host machine is not strictly necessary, but it is convenient if you want to write code on your host machine and run it on the virtual machine.
+
 Make sure that these following packages are installed:
 
 1. [Truffle](https://truffleframework.com/docs/truffle/getting-started/installation)
