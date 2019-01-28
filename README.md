@@ -14,23 +14,23 @@ The Resume.sol contract holds the primary logic of the decentralized resume plat
 
 1. Owner
 
-The owner of the contract has the power to assign individuals as admins on the contract.
+    The owner of the contract has the power to assign individuals as admins on the contract.
 
 2. Admins
 
-The admins are given the power to add vetted institutions to the platform. 
+    The admins are given the power to add vetted institutions to the platform. 
 
 3. Institutions
 
-The current platform supports 3 types of institutions:
-    a. Universities
-    b. Schools
-    c. Certificators
-These institutions are the ones who submit entries to users, giving them degrees or certificates to add to their resumes.
+    The current platform supports 3 types of institutions:
+        a. Universities
+        b. Schools
+        c. Certificators
+    These institutions are the ones who submit entries to users, giving them degrees or certificates to add to their resumes.
 
 4. Users
 
-The users on the platform are the ones who hold resumes.
+    The users on the platform are the ones who hold resumes.
 
 ### Functions and Interaction Logic
 
@@ -40,9 +40,9 @@ The users on the platform are the ones who hold resumes.
 
 - The contract owner can assign addresses as admins to oversee the platform and specifically add new institutions.
 
-'''
+```
 isAdmin
-'''
+```
 
 - This allows the contract owner to check if an address is indeed an approved admin
 
