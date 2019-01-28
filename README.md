@@ -264,7 +264,7 @@ To import an account from ganache onto MetaMask, choose Create Account from the 
 
 Once you import the first account, account [0] from ganache, you will see that the account balance in ether is slightly under 100. This account is used by ganache to launch the contract so it will have used some ether in the contract launch. Other accounts that you import from ganache will start with 100 ether balance.
 
-<img src="Tutorial_Screenshots/metamask_account_balance.png"/>
+<img src="Tutorial_Screenshots/metamask_account_balance.png" width="400" height="700"/>
 
 This frontend has the 3 main contract functionalities incorporated. 
 
