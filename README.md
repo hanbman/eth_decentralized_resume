@@ -270,19 +270,19 @@ This frontend has the 3 main contract functionalities incorporated.
 
 1. First, you can sign up as a user on this Dapp. Use one of the accounts other than the contract owner by going into the ganache command line window and copying a different private key other than account [0] and importing that account into metamask as you did with the previous account. Then, click on the USER button and in the drop down, type in your name in the "Username" field. Click the Sign Up button and you will be added to the contract as a user. 
 
-<img src="Tutorial_Screenshots/frontend_usersignup.png" width="600" height="150" />
+<img src="Tutorial_Screenshots/frontend_usersignup.png" width="500" height="150" />
 
 MetaMask should prompt you to approve a transaction. That is basically paying a nominal fee for the transaction to happen to run the function necessary to sign up the user. Congrats! When this prompt happens, that means that the you are able to interact with the contract via the MetaMask client through Web3. This is the way you would use an ethereum account, via a MetaMask client, to transfer ethereum and make smart contract transactions.
 
 <img src="Tutorial_Screenshots/metamask_transaction.png" width="400" height="700" />
 
-2. As a contract owner, you can also sign up other accounts as Admins on the contract. Go to metamask and change the identity to the owner's account. Then copy the address for another account and enter in that value in the "Admin Address" field. Click sign up. Now that account has been given Admin rights.
+2. As a contract owner, you can also sign up other accounts as Admins on the contract. Go to metamask and change the identity to the owner's account. Then copy the address for another account and enter in that value in the "Admin Address" field. Click sign up. Now that account has been given Admin rights. You should also see a transaction prompt from MetaMask.
 
-<img src="Tutorial_Screenshots/frontend_adminsignup.png" width="600" height="200" />
+<img src="Tutorial_Screenshots/frontend_adminsignup.png" width="550" height="200" />
 
-3. Admins (including the owner) have the power to add institutions. Institutions are either universities, schools, or certificators who can add entries to the resume of the users. Add the "Institution Name," "Institution Address," and "Type" to sign up a verified institution.
+3. Admins (including the owner) have the power to add institutions. Institutions are either universities, schools, or certificators who can add entries to the resume of the users. Add the "Institution Name," "Institution Address," and "Type" to sign up a verified institution. You should also see a transaction prompt from MetaMask.
 
-<img src="Tutorial_Screenshots/frontend_institutionsignup.png" width="600" height="1000" />
+<img src="Tutorial_Screenshots/frontend_institutionsignup.png" width="600" height="800" />
 
 After signing up either admins, institutions, or users, click the Enter link to proceed to the next page.
 
@@ -292,4 +292,4 @@ NOTE: Full integration for the frontend to all functionality on the contract is 
 
 At the top left hand corner of the page, we keep track of the current ethereum account address of the contract owner and display it back for reference.
 
-<img src="Tutorial_Screenshots/frontend_owner.png" width="400" height="100" />
+<img src="Tutorial_Screenshots/frontend_owner.png" width="600" height="150" />
