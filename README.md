@@ -156,6 +156,8 @@ Use git to clone this repo to your local machine:
 
 ![](Tutorial_Screenshots/git_clone_command.png)
 
+#### Using Truffle to Interact with the Contract
+
 **Truffle Compile, Migrate, Test:**
 
 To run truffle compile, migrate, and test, first go into the local folder where the repo has been cloned. Start ganache-cli from the command line in that directory with the command:
@@ -204,7 +206,8 @@ Standard libraries were found in the [Consensys repo](https://github.com/ConsenS
 3. BokkyPooBahsDateTimeLibrary - helps with datetime processing such as converting between unix timestamp and human readable datetime
 4. Ownable - In addition, the resume contract inherits from the Ownable contract. Although not a library, ownable contains functionality to help deal with contract ownership and ownership mutability.
 
-**Frontend:**
+
+#### Using the Frontend to Interact with the Contract
 
 We recommend that you have google chrome along with the [MetaMask](https://metamask.io/) Chrome plugin installed in your ubuntu environment when running this frontend.
 
@@ -298,6 +301,6 @@ At the top left hand corner of the page, we keep track of the current ethereum a
 
 <img src="Tutorial_Screenshots/frontend_owner.png"/>
 
-**Deployment to other Test Nets:**
-
+## Deployment to other Test Nets
+ 
 This contract has been deployed to the Rinkeby test net. Please check the file deployed_addresses.txt for more information.
