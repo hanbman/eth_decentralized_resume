@@ -40,9 +40,7 @@ The Resume.sol contract holds the primary logic of the decentralized resume plat
 
 - The contract owner can assign addresses as admins to oversee the platform and specifically add new institutions.
 
-```
-isAdmin
-```
+```isAdmin```
 
 - This allows the contract owner to check if an address is indeed an approved admin
 
