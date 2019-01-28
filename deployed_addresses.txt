@@ -1,0 +1,81 @@
+Starting migrations...
+======================
+> Network name:    'rinkeby'
+> Network id:      4
+> Block gas limit: 7006834
+
+
+1_initial_migration.js
+======================
+
+   Deploying 'Migrations'
+   ----------------------
+   > transaction hash:    0x2d958026d3816e0f1399084d8eb67e740da34af8b7510cedf5be0c80c12b9003
+   > Blocks: 0            Seconds: 8
+   > contract address:    0xad3Ecc4F17D16cc6c6FE51Ab8738690264964Eea
+   > account:             0xefce7A91dC93FaC9D51fa2d90c02c6a33163E946
+   > balance:             18.7443044
+   > gas used:            284780
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.0056956 ETH
+
+
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:           0.0056956 ETH
+
+
+2_deploy_contracts.js
+=====================
+
+   Deploying 'BokkyPooBahsDateTimeLibrary'
+   ---------------------------------------
+   > transaction hash:    0x0268b8629aaeabe6140142548972afc18608e4d6fe05f460b7b2f770fbab3358
+   > Blocks: 1            Seconds: 24
+   > contract address:    0x41D53b536A2B293615673B7F3aA290D022255cc0
+   > account:             0xefce7A91dC93FaC9D51fa2d90c02c6a33163E946
+   > balance:             18.7419662
+   > gas used:            74876
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.00149752 ETH
+
+
+   Deploying 'SafeMath'
+   --------------------
+   > transaction hash:    0x683ae87bae96156b9b8c0774ad36b6ac07505bd0227d267316b63657b19990bd
+   > Blocks: 0            Seconds: 12
+   > contract address:    0x47654Ac903d5E6C1A0BBFbF7125A9f8a41fa0Fa8
+   > account:             0xefce7A91dC93FaC9D51fa2d90c02c6a33163E946
+   > balance:             18.74046868
+   > gas used:            74876
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.00149752 ETH
+
+
+   Deploying 'Resume'
+   ------------------
+   > transaction hash:    0x61538ddcc91c9f20e3da2391bc12bc5a7d62d769d68b0af8ddc1bbecc5d12870
+   > Blocks: 0            Seconds: 12
+   > contract address:    0x3f76c6f7b31Bc59d448bE1239f494D4ae796Bb9E
+   > account:             0xefce7A91dC93FaC9D51fa2d90c02c6a33163E946
+   > balance:             18.638669
+   > gas used:            5089984
+   > gas price:           20 gwei
+   > value sent:          0 ETH
+   > total cost:          0.10179968 ETH
+
+
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:          0.10479472 ETH
+
+
+Summary
+=======
+> Total deployments:   4
+> Final cost:          0.11049032 ETH
