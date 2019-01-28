@@ -278,11 +278,11 @@ MetaMask should prompt you to approve a transaction. That is basically paying a 
 
 2. As a contract owner, you can also sign up other accounts as Admins on the contract. Go to metamask and change the identity to the owner's account. Then copy the address for another account and enter in that value in the "Admin Address" field. Click sign up. Now that account has been given Admin rights. You should also see a transaction prompt from MetaMask.
 
-<img src="Tutorial_Screenshots/frontend_adminsignup.png" width="550" height="200" />
+<img src="Tutorial_Screenshots/frontend_adminsignup.png" width="500" height="200" />
 
 3. Admins (including the owner) have the power to add institutions. Institutions are either universities, schools, or certificators who can add entries to the resume of the users. Add the "Institution Name," "Institution Address," and "Type" to sign up a verified institution. You should also see a transaction prompt from MetaMask.
 
-<img src="Tutorial_Screenshots/frontend_institutionsignup.png" width="600" height="800" />
+<img src="Tutorial_Screenshots/frontend_institutionsignup.png" width="600" height="650" />
 
 After signing up either admins, institutions, or users, click the Enter link to proceed to the next page.
 
