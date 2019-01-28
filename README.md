@@ -23,7 +23,7 @@ The Resume.sol contract holds the primary logic of the decentralized resume plat
 3. Institutions
 
     The current platform supports 3 types of institutions:
-    
+
     a. Universities
 
     b. Schools
@@ -297,3 +297,7 @@ NOTE: Full integration for the frontend to all functionality on the contract is 
 At the top left hand corner of the page, we keep track of the current ethereum account address of the contract owner and display it back for reference.
 
 <img src="Tutorial_Screenshots/frontend_owner.png"/>
+
+**Deployment to other Test Nets:**
+
+This contract has been deployed to the Rinkeby test net. Please check the file deployed_addresses.txt for more information.
