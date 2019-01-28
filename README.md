@@ -139,7 +139,14 @@ This project was developed in an ubuntu64 environment.
 
 The ethereum decentralized resume is a truffle project that contains the required contract, migration and test files to run a DApp. 
 
-Use git to clone this repo to your local machine.
+Use git to clone this repo to your local machine:
+
+1. Grab the link from the git repo in the top right hand corner under "Clone or download"
+![](Tutorial_Screenshots/git_clone.png)
+
+2. G
+
+
 
 Then execute the rest via command line.
 
