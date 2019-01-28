@@ -12,7 +12,7 @@ There exists a challenge of keeping a verifiable, trustworthy record of an indiv
 
 The Resume.sol contract holds the primary logic of the decentralized resume platform. There are 4 main parties that interact on the contract:
 
-1. Owner
+1. '''Owner'''
 
     The owner of the contract has the power to assign individuals as admins on the contract.
 
@@ -101,7 +101,7 @@ The Resume.sol contract holds the primary logic of the decentralized resume plat
 
 ###### Required installations to run and test the contract
 
-Setting up the Environment:
+**Setting up the Environment**
 
 The DApp was developed using these environment specifications:
 
