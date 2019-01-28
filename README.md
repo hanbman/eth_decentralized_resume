@@ -170,9 +170,13 @@ Then, in the same directory, run the command:
 
 ```>truffle migrate```
 
+![](Tutorial_Screenshots/truffle_migrate.png)
+
 This migrates our contract, it's dependencies, and other artifacts on the blockchain of our choice. Since we are only testing here, this migrates onto the ganache cli test chain.
 
 ```>truffle test```
+
+![](Tutorial_Screenshots/truffle_test.png)
 
 Tests are written in javascript to test the functionality of the contract. This function shows the results from running tests on the ganache test chain.
 
