@@ -40,9 +40,11 @@ The Resume.sol contract holds the primary logic of the decentralized resume plat
 
 - The contract owner can assign addresses as admins to oversee the platform and specifically add new institutions.
 
+
     isAdmin
 
 - This allows the contract owner to check if an address is indeed an approved admin
+
 
     setSignUpFee
 
@@ -66,21 +68,26 @@ The Resume.sol contract holds the primary logic of the decentralized resume plat
 
 - Users are allowed to sign up themselves to the platform. They only need to provide a name and their address will be recorded as a unique user on the platform.
 
+
     checkQueueSize
 
 - Users can quickly check if they have entries waiting in their queue and how large the queue has grown.
+
 
     showMyResumeQueue
 
 - Once an institution creates an entry for a user, it is not automatically added to a user's resume. There is an intermediate staging step where the entry enters the resume queue of the user. The user is then able to check the queue and approve an entry. If they do not agree with a entry from an institution, this gives them a chance to review and discuss before it is added to their record permanently. This also gives an additional layer to guard against mistakes or fraudulent entries from institutions. Users are incentivized to add entries to their resume to build out their history. The function showMyResumeQueue let's the user see the next entry in their queue. The entry that is shown is the oldest entry in the queue based on FIFO principles. Since ethereum does not provide the ability to return entire dynamic arrays, this function only shows the next entry and requires the user to approve or reject before viewing the next entry. It is recommended that user start at this step and view their queues periodically to check if new entries require approval. Users need to record the entry number so that they can pass this to the approveEntry function to approve or reject the entry.
 
+
     approveEntry
 
 - Once users view the next entry in their queue, they use this function to approve or reject the entry. They need to enter in the unique entryID that is associated with the next entry in their queue, along with a signal to approve or reject the entry. If approved, the entry will then be added permanently to the resume of the user, and if rejected, the entry will simple be removed from the user's resume queue.
 
+
     checkUserID
 
 - This allows users to view their unique userID that exists on the platform that ties to their user address
+
 
     checkSignUpDate
 
@@ -91,6 +98,7 @@ The Resume.sol contract holds the primary logic of the decentralized resume plat
     checkResumeSize
 
 - This allows third parties to check how many entries are in a user's resume. This is a good first step before viewing a user's actual resume elements. Since the view resume function requires an input of the element of a user's resume to view, this function let's a third party see how much history a user has and choose the right element to view whether they want to see the oldest or earliest entry.
+
 
     viewResume
 
