@@ -256,7 +256,7 @@ This will launch the frontend in the Chrome browser with localhost:3000
 
 Go into the Metamask plugin, which is the small fox icon in the chrome brower, and set the connection to "Custom RPC" and the target RPC url to http://127.0.0.1:7545. This connects the Ganache chain with metamask so accounts from ganache can be used through metamask. 
 
-<img src="Tutorial_Screenshots/metamask_set_up_rpc.png" width="100" height="200" />
+<img src="Tutorial_Screenshots/metamask_set_up_rpc.png" width="400" height="700" />
 
 To import an account from ganache onto MetaMask, choose Create Account from the drop down in MetaMask and enter in the private key. Now you are free to interact with the DApp using MetaMask via the ganache test network!
 
