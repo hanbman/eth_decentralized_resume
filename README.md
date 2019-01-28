@@ -23,6 +23,7 @@ The Resume.sol contract holds the primary logic of the decentralized resume plat
 3. Institutions
 
     The current platform supports 3 types of institutions:
+    
     a. Universities
 
     b. Schools
