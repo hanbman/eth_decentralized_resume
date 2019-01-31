@@ -279,6 +279,8 @@ Once you import the first account, account [0] from ganache, you will see that t
 
 <img src="Tutorial_Screenshots/metamask_account_balance.png" width="400" height="700"/>
 
+NOTE: If you see the account owner address at the top left hand corner, it means the front end has sucessfully connected to the migrated contract. IF no account address is shown and you have made sure that 1) ganache is connected to port 7545 AND 2) you have run truffle migrate to migrate the contract- then a simple refresh of the browser webpage may do the trick to fully load the frontend.
+
 This frontend has the 3 main contract functionalities incorporated. 
 
 1. First, you can sign up as a user on this Dapp. Use one of the accounts other than the contract owner by going into the ganache command line window and copying a different private key other than account [0] and importing that account into metamask as you did with the previous account. Then, click on the USER button and in the drop down, type in your name in the "Username" field. Click the Sign Up button and you will be added to the contract as a user. 
