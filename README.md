@@ -113,6 +113,7 @@ The DApp was developed using these environment specifications:
 - npm 3.5.2
 - node.js 8.10.0
 - lite-server 2.4.0
+- truffle-hdwallet-provider 0.0.6
 - truffle 5.0.1
 - solidity 0.5.0
 - Ganache-CLI 6.2.3
@@ -223,6 +224,11 @@ Run the command
 
 ![](Tutorial_Screenshots/install_lite-server.png)
 
+Then, in the same project folder, run the command 
+
+```npm install```
+
+This will install truffle-hdwallet-provider. 
 
 **Step 1: Run the ganache cli:**
 
