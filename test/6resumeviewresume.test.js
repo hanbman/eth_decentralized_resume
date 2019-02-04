@@ -27,7 +27,7 @@ contract('Resume', function(accounts) {
             //set parameters of institution
             const inst_name = "School of Hard Knocks"
             const type = 1
-            alice adds bob as an institution
+            //alice adds bob as an institution
             await resume.addInstitution(inst_name, bob, type, {from: alice})
 
             //owner sets the sign up fee for new users
