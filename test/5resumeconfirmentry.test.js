@@ -55,12 +55,12 @@ contract('Resume', function(accounts) {
             const queue = await resume.showMyResumeQueue({from: ashley})
             
             //ashley can now approve the items in her queue after viewing them
-            const _entryID = 1
+            const _entryID = 2
             const _doYouWantToApprove = true
             const approve_entry = await resume.approveEntry(_entryID, _doYouWantToApprove, {from: ashley})
             
             assert.equal(approve_entry.logs[0].event, "AddedtoResume", 'an entry was unable to be added to resume')
-            assert.equal(approve_entry.logs[0].args.EntryID, 1, 'EntryID #1 not added to resume')
+            assert.equal(approve_entry.logs[0].args.EntryID, 2, 'EntryID #2 not added to resume')
         })
 
     })
