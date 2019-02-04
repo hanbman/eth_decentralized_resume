@@ -157,6 +157,14 @@ Use git to clone this repo to your local machine:
 
 ![](Tutorial_Screenshots/git_clone_command.png)
 
+3. Go into the local directory and install packages
+
+```cd eth_decentralized_resume```
+
+```npm install```
+
+Among other packages, this will install truffle-hdwallet-provider. 
+
 #### Using Truffle to Interact with the Contract
 
 **Truffle Compile, Migrate, Test:**
