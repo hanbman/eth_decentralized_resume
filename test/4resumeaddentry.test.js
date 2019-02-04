@@ -23,21 +23,21 @@ contract('Resume', function(accounts) {
             //deploy the contract
             const resume = await Resume.deployed()
             //owner adds alice as admin
-            //await resume.addAdmin(alice, {from: owner})
+            await resume.addAdmin(alice, {from: owner})
             //set parameters of institution
-            //const inst_name = "School of Hard Knocks"
-            //const type = 1
+            const inst_name = "School of Hard Knocks"
+            const type = 1
             //alice adds bob as an institution
-            //await resume.addInstitution(inst_name, bob, type, {from: alice})
+            await resume.addInstitution(inst_name, bob, type, {from: alice})
 
             //owner sets the sign up fee for new users
-            //const fee = 10
-            //await resume.setSignUpFee(fee, {from: owner})
+            const fee = 10
+            await resume.setSignUpFee(fee, {from: owner})
 
             //ashley signs up and pays the sign up fee
-            //const name = "Ashley"
-            //const amount = 10
-            //await resume.signUpUser(name, {from: ashley, value: amount})
+            const name = "Ashley"
+            const amount = 10
+            await resume.signUpUser(name, {from: ashley, value: amount})
 
             //bob the institution creates an entry for ashley's resume
             //this entry will reside in ashley's resume queue awaiting ashley's approval
