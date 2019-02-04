@@ -65,7 +65,7 @@ contract('Resume', function(accounts) {
             //first they can view the size of ashley's resume
             //then they can choose which number of element of the entry they want to view
             //all of these entries only enter her resume after they have been approved
-            const _UserID = 2
+            const _UserID = 3
             const _entryElement = 0
             const resumeSize = await resume.checkResumeSize(_UserID, {from: employer})
             const ashleysResume = await resume.viewResume(_UserID, _entryElement, {from: employer})
