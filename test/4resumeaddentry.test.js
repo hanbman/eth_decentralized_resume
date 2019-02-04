@@ -25,6 +25,7 @@ contract('Resume', function(accounts) {
             //owner adds alice as admin
             await resume.addAdmin(alice, {from: owner})
             //set parameters of institution
+            
             const inst_name = "School of Hard Knocks"
             const type = 1
             //alice adds bob as an institution
