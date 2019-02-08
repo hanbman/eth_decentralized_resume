@@ -1,6 +1,3 @@
-//Test #6- This test verifies that third parties can view a resume entry from
-//a specified user and their entry element
-
 var Resume = artifacts.require('Resume')
 
 contract('Resume', function(accounts) {
@@ -19,6 +16,8 @@ contract('Resume', function(accounts) {
       describe("Tests", function() {
         beforeEach(deploy);
 
+        //Test #1- This test verifies that Owner of the contract should be able to sign up admins, 
+        //and verify who is an admin
         it("Owner of the contract should be able to sign up admins, and verify who is an admin.", async() => {
             //Deploy contract
             const resume = await Resume.deployed()
@@ -32,6 +31,7 @@ contract('Resume', function(accounts) {
             assert.equal(alice_admin, true, 'alice was not added as admin')
         })
 
+        //Test #2- This test verifies that once added, admins can add institutions to the platform
         it("Admins should be able to add institutions.", async() => {
             //deploy contract
             const resume = await Resume.deployed()
@@ -46,6 +46,8 @@ contract('Resume', function(accounts) {
             assert.equal(bob_added.logs[0].args.UniversityID, 1, 'institution was not added with instution ID as 1')
         })
         
+        //Test #3- This test verifies that Owner can change and set the sign up fee
+        //Then a user can sign up if they pay the correct fee and if they pay extra they are refunded
         it("Owner should be able to set the sign up fee. User should be able to sign up.", async() => {
             //verify ashley's ether balance before transactions
             var ashleyBalanceBefore = await web3.eth.getBalance(ashley)
@@ -73,6 +75,8 @@ contract('Resume', function(accounts) {
             assert.notEqual(parseInt(ashleyBalanceBefore), parseInt(ashleyBalanceAfter), 'user was not charged sign up fee')
         })
 
+        //Test #4- This test verifies that Institutions can add entries to a user's queue
+        //And the user can view their queue and the next item up for approval
         it("Institution should be able to add entry to user's queue. User should be able to view queue.", async() => { 
             //deploy the contract
             const resume = await Resume.deployed()
@@ -104,6 +108,7 @@ contract('Resume', function(accounts) {
             assert.equal(queue.review, _review, 'review was not added correctly')
         })
 
+        //Test #5- This test verifies that the user can confirm or reject the entries in their queue
         it("Users should be able to confirm entries in their queue into their resume.", async() => { 
             //deploy the contract
             const resume = await Resume.deployed()
@@ -117,6 +122,8 @@ contract('Resume', function(accounts) {
             assert.equal(approve_entry.logs[0].args.EntryID, 1, 'EntryID #1 not added to resume')
         })
 
+        //Test #6- This test verifies that third parties can view a resume entry from
+        //a specified user and their entry element
         it("Outside parties should be able to view user's resume.", async() => { 
             //deploy the contract
             const resume = await Resume.deployed()
